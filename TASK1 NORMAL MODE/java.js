@@ -1509,7 +1509,7 @@ function moveRightbullet1() {
   countr1=0;
   console.log(flags1.collision)
   if(flags1.collision==1 || flags1.collision==2){ flags1.direc="right"; gamecollision1(); return;}} 
-  var leftlimit=1080;
+  var leftlimit=1100;
   if(window.innerWidth<480) leftlimit=467;
   if (leftbullet1 > leftlimit || flags1.shield == 0) {
     reset1();
