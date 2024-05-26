@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>8x8 Grid</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>  
+  <div class="op">   
+  <button class="tot" onclick="refresh()"> Reset <script>
+        function refresh(){
+          location.reload();}
+  </script></button>
+  <button class="tot" onclick="play()"> Pause</button>
+  <button class="tot" onclick="play()"> Resume</button></div>
+  <div class="bullet"></div>
+  <div class="bullet1"></div>
+  <div class="grid-container" id="gridContainer">
+  </div>
+<div class="kk">
+<button class="but" onclick="but1('left')">LEFT</button>
+<button class="but" onclick="but1('right')">RIGHT</button>
+</div>
+<div class="kkb">
+  <button class="butb" onclick="but1b('left')">LEFT</button>
+  <button class="butb" onclick="but1b('right')">RIGHT</button>
+  </div>
+<div class="ki">
+<button class="xv"  onclick="rotateLeft()">Left</button>
+<button  class="xv" onclick="rotateRight()">Right</button>
+</div>
+<div class="kib">
+  <button class="xvb"  onclick="rotateLeftb()">Left</button>
+  <button  class="xvb" onclick="rotateRightb()">Right</button>
+  </div>
+<div class="timer">
+  <div class="team-timer" id="teamATimer">Team A: <span id="teamATime">200</span> seconds</div>
+  <div class="team-timer" id="teamBTimer">Team B: <span id="teamBTime">200</span> seconds</div>
+</div>
+</body>
+<script src="java.js"></script>
+</html>
