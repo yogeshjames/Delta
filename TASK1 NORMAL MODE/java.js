@@ -607,14 +607,7 @@ console.log(team);
 document.querySelector(`.box-${BoxN}`).addEventListener('click', clickHandler);
 
 function move(BoxN,imgUrl,pos) {
-  if (BoxN - 8 >= 0) {
-    document.querySelector(`.box-${BoxN - 8}`).style.backgroundColor = "#64c5e6";
-}if (BoxN + 8 <= 63) {
-     document.querySelector(`.box-${BoxN + 8}`).style.backgroundColor = "#64c5e6";}
-if (BoxN -1 >=0) {
-     document.querySelector(`.box-${BoxN - 1}`).style.backgroundColor = "#64c5e6";}
-if (BoxN + 1 <= 63) {
-       document.querySelector(`.box-${BoxN + 1}`).style.backgroundColor = "#64c5e6";}
+ blue();
   document.querySelector(`.box-${BoxN}`).removeEventListener('click', clickHandler);
       document.querySelector(`.box-${BoxN}`).style.backgroundImage = "none";
       document.querySelector(`.box-${BoxN +(pos)}`).style.backgroundImage = imgUrl;
@@ -1058,14 +1051,7 @@ document.querySelector(`.box-${BoxNb}`).addEventListener('click', clickHandlerb)
 
 function moveb(BoxNb,imgUrlb,posu) {
 
-  if (BoxNb - 8 >= 0) {
-    document.querySelector(`.box-${BoxNb - 8}`).style.backgroundColor = "#64c5e6";
-}if (BoxNb + 8 <= 63) {
-     document.querySelector(`.box-${BoxNb + 8}`).style.backgroundColor = "#64c5e6";}
-if (BoxNb -1 >=0) {
-     document.querySelector(`.box-${BoxNb - 1}`).style.backgroundColor = "#64c5e6";}
-if (BoxNb + 1 <= 63) {
-       document.querySelector(`.box-${BoxNb + 1}`).style.backgroundColor = "#64c5e6";}
+ blue();
   document.querySelector(`.box-${BoxNb}`).removeEventListener('click', clickHandlerb);
       document.querySelector(`.box-${BoxNb}`).style.backgroundImage = "none";
       document.querySelector(`.box-${BoxNb +(posu)}`).style.backgroundImage = imgUrlb;
