@@ -1457,7 +1457,7 @@ function moveLeftbullet1() {
   flags1.flag = 1;
   flags1.collision= 0;
   //callGameFunctions([3, 2, 5, 6],38);
-  if(countl1>17){
+  if(countl1>16){
     callGameFunctions1([3, 2, 5, 6],39);
    collison1(0,1,51);
    collison1(7,8,51);
