@@ -1,0 +1,1745 @@
+const gridContainer = document.getElementById('gridContainer');
+for (let i = 0; i <= 63; i++) {
+  const box = document.createElement('div');
+  box.classList.add('box', `box-${i}`);
+  box.style.backgroundImage = "none";
+  gridContainer.appendChild(box);
+}  
+function blue(){
+for (let i = 0; i <= 63; i++) {
+document.querySelector(`.box-${i}`).style.backgroundColor = "#64c5e6";
+
+}
+}
+document.querySelector('.box-3').style.backgroundImage = "url('TITAN.png')";
+document.querySelector('.box-12').style.backgroundImage = "url('CANON1.svg')";
+document.querySelector('.box-12').style.backgroundPosition = '10% 40%'; 
+ document.querySelector('.box-10').style.backgroundImage =  "url('shield.png')";
+document.querySelector('.box-13').style.backgroundImage = "url('rok1.svg')";
+document.querySelector('.box-15').style.backgroundImage = "url('tri.svg')";
+document.querySelector('.box-63').style.backgroundImage = "url('canon2.svg')";
+document.querySelector('.box-49').style.backgroundImage = "url('castle2.svg')";
+document.querySelector('.box-52').style.backgroundImage =  "url('shield2.svg')";
+document.querySelector('.box-54').style.backgroundImage = "url('rok2.svg')";
+document.querySelector('.box-50').style.backgroundImage = "url('tri2.svg')";
+function buttonreset(){
+  document.querySelectorAll(".xv")[0].style.visibility="hidden";
+  document.querySelectorAll(".xv")[1].style.visibility="hidden";
+  document.querySelectorAll(".but")[0].style.visibility="hidden";
+ document.querySelectorAll(".but")[1].style.visibility="hidden"; 
+ document.querySelectorAll(".xvb")[0].style.visibility="hidden";
+ document.querySelectorAll(".xvb")[1].style.visibility="hidden";
+ document.querySelectorAll(".butb")[0].style.visibility="hidden";
+ document.querySelectorAll(".butb")[1].style.visibility="hidden"; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------
+document.querySelector('.bullet').style.top = '90px';
+document.querySelector('.bullet').style.left = '670px';
+var bullet = document.querySelector('.bullet');
+function centerBulletInDiv(toti, m) {
+  let targetDiv = document.querySelector(`.box-${toti}`);
+  let bulletRect = bullet.getBoundingClientRect();
+  let centeredLeft = targetDiv.offsetLeft + (targetDiv.offsetWidth / 2) - (bulletRect.width / 2);
+  let centeredTop = targetDiv.offsetTop + (targetDiv.offsetHeight / 2) - (bulletRect.height / 2);
+  bullet.style.left = `${centeredLeft}px`;
+  bullet.style.top = `${centeredTop + m}px`; // Adjusted to add m to the centeredTop value
+}
+
+
+setTimeout(() => {
+  centerBulletInDiv(3,0);
+}, 10);
+
+
+
+
+var posx = document.querySelector('.bullet').style.top;
+var numberX = parseInt(posx, 10);
+var currentAnimationFrame;
+var flags = {
+  s: 1,
+  flag: 1,
+  shield: 1,
+  collision: 0,
+  direc: ""
+};
+
+
+function Shoot() {
+  numberX += 5;
+  document.querySelector('.bullet').style.top = numberX + 'px';
+  console.log(1);
+  if (flags.shield == 0) {
+    return;
+  }
+  if (flags.s === 1) {
+    callGameFunctions([3, 2, 5, 6],5);
+    collison(0,1,5);
+    collison(7,8,5);
+    
+  }
+
+  const a = (document.querySelector(`.box-${inp[0]}`).style.backgroundImage.includes("rok1.svg") && flags.flag == 0);
+  const c = (document.querySelector(`.box-${inp[0]}`).style.backgroundImage.includes("rok.svg") && flags.flag == 0);
+  const b = (document.querySelector(`.box-${inp[1]}`).style.backgroundImage.includes("tri.svg")&& flags.flag == 2);
+  
+  const d = (document.querySelector(`.box-${inp[7]}`).style.backgroundImage.includes("rok2.svg") && flags.flag == 3);
+  const e = (document.querySelector(`.box-${inp[7]}`).style.backgroundImage.includes("rok3.svg") && flags.flag == 3);
+  const f = (document.querySelector(`.box-${inp[8]}`).style.backgroundImage.includes("tri2.svg")&& flags.flag == 5);
+  
+  console.log(c);
+
+  if (numberX > 830) {
+    document.querySelector('.bullet').style.visibility = "hidden";
+    setTimeout(function() {
+      document.querySelector('.bullet').style.visibility = "visible";
+      reset();
+      numberX = 90;
+    }, 500);
+  } else if (flags.s === 1) {
+    currentAnimationFrame = requestAnimationFrame(Shoot);
+    Reached=1;
+  }
+  if (flags.s == 0) {
+    console.log(c);
+    console.log(a);
+    if (c || e) {
+      moveLeftbullet()
+      flags.direc = "left";
+      flags.collision = 0;
+    } else if (a || d) {
+      moveRightbullet()
+      flags.direc = "right";
+      flags.collision = 0;
+      console.log(1);
+    } else if ((b && (rotation == 270 || rotation == -90)) || (f && (rotationb == 270 || rotationb == -90))){
+      moveLeftbullet()
+      flags.direc = "left";
+      flags.collision = 0;
+    } else if( (b && rotation == 0)|| (f && rotationb == 0)){
+     moveRightbullet()
+      flags.direc = "right";
+      flags.collision = 0;
+      console.log(1);
+    }
+    else if (b || f) {
+      reset();
+    }
+  }
+}
+function callGameFunctions(gameNumbers,oi) {
+  gameNumbers.forEach(function(gameNumber) {
+    game(gameNumber,oi);
+  });
+}
+
+var Reached=0;
+var Reached1=0;
+function reset() {
+  cancelAnimationFrame(currentAnimationFrame);
+  findDivWithImage();
+  centerBulletInDiv(inp[4],0);
+//  let di = document.querySelector(`.box-${inp[4]}`);
+  flags.s = 1;
+  flags.flag= 1;
+  flags.shield= 1;
+  flags.collision= 0;
+  flags.direc="";
+  numberX = 90; 
+  Reached=0;// Reset top position
+  return;
+}
+var countl=0;
+function moveLeftbullet() {
+  cancelAnimationFrame(currentAnimationFrame); // Cancel any ongoing animation
+  var leftbullet = parseInt(bullet.style.left);
+  leftbullet -= 5;
+  countl++; 
+  bullet.style.left = leftbullet + 'px';
+  flags.flag = 1;
+  flags.collision= 0;
+  //callGameFunctions([3, 2, 5, 6],38);
+  if(countl>16){
+    callGameFunctions([3, 2, 5, 6],38);
+   collison(0,1,50);
+  collison(7,8,50);
+    countl=0;
+    console.log(flags.collision)
+    if(flags.collision==1 || flags.collision==2){flags.direc="left";gamecollision(); return;} }
+  if (leftbullet < 330 || flags.shield == 0) {
+    reset();
+    countl=0;
+    console.log(1);
+    return;
+  } else {
+    currentAnimationFrame = requestAnimationFrame(moveLeftbullet);
+    
+  }
+}
+
+
+var countr=0;
+function moveRightbullet() {
+  cancelAnimationFrame(currentAnimationFrame); // Cancel any ongoing animation
+  var leftbullet = parseInt(bullet.style.left);
+  leftbullet += 5;
+  countr++;
+  bullet.style.left = leftbullet + 'px';
+  flags.flag = 1;
+  flags.collision= 0;
+ if(countr>16){
+  callGameFunctions([3, 2, 5, 6],38);
+  collison(0,1,50);
+  collison(7,8,50);
+  countr=0;
+  console.log(flags.collision)
+  if(flags.collision==1 || flags.collision==2){ flags.direc="right"; gamecollision(); return;}} 
+  if (leftbullet > 1110 || flags.shield == 0) {
+    reset();
+    countr=0;
+    return;
+  } else {
+    currentAnimationFrame = requestAnimationFrame(moveRightbullet); 
+}
+}
+
+var countt=0;
+function moveUpbullet() {
+  cancelAnimationFrame(currentAnimationFrame); 
+    var topbullet = parseInt(bullet.style.top);
+  topbullet -= 5;
+  countt++;
+  bullet.style.top = topbullet + 'px';
+  flags.flag = 1;
+  flags.collision= 0;
+  //callGameFunctions([3, 2, 5, 6]);
+ if(countt>20){
+  console.log(56656)
+  callGameFunctions([3, 2, 5, 6],56);
+  collison(0,1,56);
+  collison(7,8,56);
+  countt=0;
+  console.log(flags.collision)
+  if(flags.collision==1 || flags.collision==2){ flags.direc="up"; gamecollision(); return;}} 
+
+  if (topbullet < 90 || flags.shield == 0) {
+    reset();
+    console.log(1);
+    countt=0; 
+    return;
+  } else {
+    currentAnimationFrame = requestAnimationFrame(moveUpbullet);
+    // Continue moving up
+  }
+}
+var countd=0;
+function moveDownbullet() {
+  cancelAnimationFrame(currentAnimationFrame); 
+  var topbullet = parseInt(bullet.style.top);
+  topbullet += 5;
+  countd++;
+ bullet.style.left =  (bullet.style.left+60) + 'px';
+  bullet.style.top = topbullet + 'px';
+  flags.flag = 1;
+  flags.collision= 0;
+  if(countd>20){
+    console.log(56656)
+    callGameFunctions([3, 2, 5, 6],56);
+    collison(0,1,56);
+    collison(7,8,56);
+    countd=0;
+    console.log(flags.collision)
+    if(flags.collision==1 || flags.collision==2){ flags.direc="down";gamecollision(); return;}}
+  if (topbullet > 830 || flags.shield == 0) { 
+    reset();
+    console.log(1);
+    countd=0;
+    return;
+  } else {
+    currentAnimationFrame = requestAnimationFrame(moveDownbullet); // Continue moving down
+  }
+}
+
+
+function game(pos,poi){
+//console.log(poi)
+  let div1 = document.querySelector('.bullet');
+  let bulletPosition = div1.getBoundingClientRect();
+  findDivWithImage();
+  let divric = document.querySelector(`.box-${inp[pos]}`);
+  let inpPosition = divric.getBoundingClientRect();
+//console.log(Math.abs(Math.abs(inpPosition.top) - Math.abs(bulletPosition.top)));
+  //console.log(Math.abs(Math.abs(inpPosition.left) - Math.abs(bulletPosition.left)));
+ //console.log(Math.abs(inpPosition.top) - Math.abs(bulletPosition.top) < 5 && Math.abs(Math.abs(inpPosition.left) - Math.abs(bulletPosition.left)) < 34);
+  if (Math.abs(Math.abs(inpPosition.top) - Math.abs(bulletPosition.top)) < poi && Math.abs(Math.abs(inpPosition.left) - Math.abs(bulletPosition.left)) <= 37.5) {
+      console.log('Collision detected! Stopping shooting.');
+      if(pos==2||pos==6){
+        if(pos==2){
+          alert("game over, B WINS");}
+          else{
+            alert("game over, A WINS");
+          }
+        alert("game over");
+        location.reload();
+      }
+      if(pos==3||pos==5){
+         reset();
+         flags.shield=0;
+          console.log("shield")
+          return;
+  }
+}
+}
+function collison(repa,repb,limitx) {
+    let div1 = document.querySelector('.bullet');
+    let bulletPosition = div1.getBoundingClientRect();
+    findDivWithImage();
+    //console.log(inp);
+    let divric = document.querySelector(`.box-${inp[repa]}`);
+    let divtri = document.querySelector(`.box-${inp[repb]}`);
+    let inpPosition = divric.getBoundingClientRect();
+    let triPosition = divtri.getBoundingClientRect(); 
+  // console.log(Math.abs(inpPosition.top) - Math.abs(bulletPosition.top));
+   //console.log(Math.abs(Math.abs(inpPosition.left) - Math.abs(bulletPosition.left)));
+    if (Math.abs(Math.abs(inpPosition.top) - Math.abs(bulletPosition.top)) < limitx && Math.abs(Math.abs(inpPosition.left) - Math.abs(bulletPosition.left)) <= 37) {
+        console.log('Collision detected! Stop.');
+        flags.s = 0;
+        if(repa==0){
+        flags.flag = 0;}
+        else{
+          flags.flag = 3;
+        }
+       flags.collision=1;
+       centerBulletInDiv(inp[repa],0);
+    }
+    //console.log(Math.abs(Math.abs(triPosition.top) - Math.abs(bulletPosition.top)));
+    //console.log(Math.abs(Math.abs(triPosition.left) - Math.abs(bulletPosition.left)));
+    //console.log(Math.abs(triPosition.top) - Math.abs(bulletPosition.top) < 5 && Math.abs(Math.abs(triPosition.left) - Math.abs(bulletPosition.left)) < 33);
+    if (Math.abs(Math.abs(triPosition.top) - Math.abs(bulletPosition.top)) < limitx && Math.abs(Math.abs(triPosition.left) - Math.abs(bulletPosition.left)) < 38) {
+        console.log('Collision detected! Stopping shooting.');
+        flags.s = 0;
+        if(repb==1){
+        flags.flag = 2;}
+        else{
+          flags.flag = 5;
+        }
+        flags.collision=2;
+       // console.log(inp[repb])
+        centerBulletInDiv(inp[repb],0);
+    }
+}
+
+var inp = []
+function findDivWithImage() {
+    for (let i = 0; i <= 63; i++) {
+        var div = document.querySelector(`.box-${i}`).style.backgroundImage;
+        if (div.includes("rok.svg") || div.includes("rok1.svg")) {
+            inp[0] = i;
+        }
+        if (div.includes("tri.svg")) {
+            inp[1] = i;
+        }
+        if (div.includes("CANON1.svg")) {
+            inp[2] = i;
+           
+        }
+
+        if (div.includes("shield.png")) {
+          inp[3] = i;
+        }
+        if (div.includes("TITAN.png")) {
+            inp[4] = i;
+          }
+         if (div.includes("shield2.svg")) {
+              inp[5] = i;
+        }
+        if (div.includes("castle2.svg")) {
+          inp[6] = i;
+      }
+      if (div.includes("rok2.svg") || div.includes("rok3.svg")) {
+        inp[7] = i;
+    }
+    if (div.includes("tri2.svg")) {
+      inp[8] = i;
+  }
+  if (div.includes("canon2.svg")) {
+    inp[9] = i;
+    }
+  }
+}
+
+
+findDivWithImage();
+
+function gamecollision() {
+  cancelAnimationFrame(currentAnimationFrame);
+  findDivWithImage();
+  let a = (document.querySelector(`.box-${inp[0]}`).style.backgroundImage.includes("rok1.svg") && flags.flag == 0);
+  let c = (document.querySelector(`.box-${inp[0]}`).style.backgroundImage.includes("rok.svg") && flags.flag == 0);
+  let b = (document.querySelector(`.box-${inp[1]}`).style.backgroundImage.includes("tri.svg") && flags.flag == 2);
+  
+  const d = (document.querySelector(`.box-${inp[7]}`).style.backgroundImage.includes("rok2.svg") && flags.flag == 3);
+  const e = (document.querySelector(`.box-${inp[7]}`).style.backgroundImage.includes("rok3.svg") && flags.flag == 3);
+  const f = (document.querySelector(`.box-${inp[8]}`).style.backgroundImage.includes("tri2.svg")&& flags.flag == 5);
+  
+
+  console.log(1223);
+  console.log(flags.collision);
+
+  // Handle collision type 1
+  if (flags.collision == 1) {
+    cancelAnimationFrame(currentAnimationFrame);
+    switch (flags.direc) {
+      case "left":
+        if (c || e) {
+         // bullet.style.left = (parseInt(bullet.style.left) + 25) + 'px';
+          //setTimeout(() => moveDownbullet(), 10);
+          moveDownbullet();
+        }
+        if (a || d) {
+          //bullet.style.left = (parseInt(bullet.style.left) + 25) + 'px';
+        //  setTimeout(() => moveUpbullet(), 10); 
+        moveUpbullet();
+        }
+        return;
+      case "right":
+        if (c || e) {
+         
+         moveUpbullet();
+        }
+        if (a || d) {
+          //bullet.style.left = (parseInt(bullet.style.left) + 25) + 'px';
+          //setTimeout(() => moveDownbullet(), 10); 
+          moveDownbullet();
+        }
+        return;
+      case "up":
+          if(c || e){
+            moveRightbullet();
+          }
+          if(a ||d){
+            moveLeftbullet();
+          }
+          return;
+      case "down":
+         if(c ||e){
+          moveLeftbullet();
+         }
+         if(a ||d){
+          moveRightbullet();
+        }
+        return;
+    }
+  }
+
+  if (flags.collision == 2) {
+    cancelAnimationFrame(currentAnimationFrame);
+    switch (flags.direc) {
+      case "right":
+        if ((b && (rotation == 270 || rotation == -90)) || (f && (rotationb == 270 || rotationb == -90))) {
+          //bullet.style.left = (parseInt(bullet.style.left) + 25) + 'px';
+          //setTimeout(() => moveUpbullet(), 10);
+          moveUpbullet();
+        } else if ((b && (rotation == 180 || rotation == -180)) || (f && (rotationb == 180 || rotationb == -180))) {
+          //bullet.style.left = (parseInt(bullet.style.left) + 25) + 'px';
+          //setTimeout(() => moveDownbullet(), 10);
+          moveDownbullet() // Delay before moving down
+        } else {
+          reset();
+        }
+        return;
+      case "left":
+        if ((b && (rotation == -270 || rotation == 90))|| (f && (rotationb == -270 || rotationb == 90))) {
+          //bullet.style.left = (parseInt(bullet.style.left) +25 ) + 'px';
+          //setTimeout(() => moveDownbullet(), 10); 
+          moveDownbullet()
+        } else if ((b && rotation == 0) || (f && rotationb == 0)) {
+        // bullet.style.left = (parseInt(bullet.style.left) + 25) + 'px';
+          //setTimeout(() => moveUpbullet(), 10); 
+          moveUpbullet()
+        } else {
+          reset();
+        }
+        return;
+        case "up":
+          if ((b && (rotation == -270 || rotation == 90))|| (f && (rotationb == -270 || rotationb == 90))) {
+            moveRightbullet();
+          }
+         else  if ((b && (rotation == 180 || rotation == -180)) || (f && (rotationb == 180 || rotationb == -180))) {
+          moveLeftbullet();
+         }
+         else {
+          reset();
+        }
+         return;
+         case "down":
+          if ((b && (rotation == 270 || rotation == -90)) || (f && (rotationb == 270 || rotationb == -90))){
+            moveLeftbullet();}
+   
+          else if( (b && rotation == 0)|| (f && rotationb == 0)){
+              moveRightbullet();}
+        
+          else {
+            reset();
+          }
+  }
+}
+}
+
+
+
+
+///CANON11///////
+
+var team="a"
+
+// Move the image to the right
+function moveR(Boxc , rig) {
+   if(Boxc!==0){
+ document.querySelector(`.box-${Boxc - 1}`).style.backgroundColor = "#64c5e6";
+}
+ document.querySelector(`.box-${Boxc + 1}`).style.backgroundColor = "#64c5e6";
+ // Add an event listener to the left box
+ document.querySelector(`.box-${Boxc}`).removeEventListener('click', clickHandlerc);
+
+     // Remove the background image from the current box and set it to the left box
+     document.querySelector(`.box-${Boxc}`).style.backgroundImage = "none";
+     document.querySelector(`.box-${Boxc + (rig)}`).style.backgroundImage = "url('TITAN.png')";
+     Boxc= Boxc + (rig);
+    // pos = Boxc;
+     console.log(4554)
+     document.querySelector(`.box-${Boxc}`).addEventListener('click', clickHandlerc);
+     reset();
+      Shoot();
+      buttonreset();
+      startTeamBTimer();
+      team="b";
+      teampause=team;
+    
+}
+
+
+var currentBoxc = 3;
+
+document.querySelector(`.box-${currentBoxc}`).addEventListener('click', clickHandlerc);
+
+function highlightAdjacentBoxes(Boxc) {
+console.log(55)
+console.log(Boxc);
+var backgroundImage1 = document.querySelector(`.box-${Boxc+1}`).style.backgroundImage;
+if(Boxc-1>=0){
+var backgroundImage2 = document.querySelector(`.box-${Boxc-1}`).style.backgroundImage;}
+else{
+  var backgroundImage2="notexist";
+}
+var left = backgroundImage2.includes("none");
+var right = backgroundImage1.includes("none");
+blue();
+if (Boxc - 1 >= 0 && left ) {
+console.log(8778);
+document.querySelector(`.box-${Boxc - 1}`).style.backgroundColor = "green";
+}
+if (Boxc + 1 <= 40 && right) {
+document.querySelector(`.box-${Boxc + 1}`).style.backgroundColor = "green";}
+
+
+function Remove(){
+if(Boxc - 1>0 ){
+  console.log(Boxc - 1)
+document.querySelector(`.box-${Boxc - 1}`).removeEventListener('click', leftClickListener);
+document.querySelector(`.box-${Boxc + 1}`).removeEventListener('click', rightClickListener);
+
+}else{
+document.querySelector(`.box-${Boxc + 1}`).removeEventListener('click', rightClickListener);
+}
+}
+
+function leftClickListener(event) {
+console.log(33223)
+if (Boxc - 1 >= 0) {
+  document.querySelector(`.box-${Boxc - 1}`).style.backgroundColor = "#64c5e6";
+}
+document.querySelector(`.box-${Boxc + 1}`).style.backgroundColor = "#64c5e6";
+if (Boxc >= 0 && left) {
+moveR(Boxc, -1);}
+Remove(Boxc);
+}
+
+function rightClickListener(event) {
+if (Boxc - 1 >= 0) {
+  document.querySelector(`.box-${Boxc - 1}`).style.backgroundColor = "#64c5e6";
+}
+document.querySelector(`.box-${Boxc + 1}`).style.backgroundColor = "#64c5e6";
+if (Boxc < 8 && right) {
+moveR(Boxc , +1);}
+Remove(Boxc);
+                                         
+}
+
+if (Boxc - 1 >= 0) {
+console.log(9090809)
+document.querySelector(`.box-${Boxc - 1}`).addEventListener('click', leftClickListener);
+}
+if (Boxc + 1 <= 7) {
+console.log(7900)
+document.querySelector(`.box-${Boxc + 1}`).addEventListener('click', rightClickListener);
+
+}
+
+}
+function clickHandlerc(event) {
+  if (team !== "a" || Paused || Reached1) return;
+console.log(event.target.className);
+var Boxc = parseInt(event.target.className.match(/\d+/)[0], 10);
+highlightAdjacentBoxes(Boxc);
+
+
+}
+let teampause=""
+//---------------------------------------------------------------------------------------------------------------------------------------------
+//function titan(){
+  var lol=0;
+function setupObjectMovement(BoxN, imgUrl) {
+console.log(team);
+document.querySelector(`.box-${BoxN}`).addEventListener('click', clickHandler);
+
+function move(BoxN,imgUrl,pos) {
+  if (BoxN - 8 >= 0) {
+    document.querySelector(`.box-${BoxN - 8}`).style.backgroundColor = "#64c5e6";
+}if (BoxN + 8 <= 63) {
+     document.querySelector(`.box-${BoxN + 8}`).style.backgroundColor = "#64c5e6";}
+if (BoxN -1 >=0) {
+     document.querySelector(`.box-${BoxN - 1}`).style.backgroundColor = "#64c5e6";}
+if (BoxN + 1 <= 63) {
+       document.querySelector(`.box-${BoxN + 1}`).style.backgroundColor = "#64c5e6";}
+  document.querySelector(`.box-${BoxN}`).removeEventListener('click', clickHandler);
+      document.querySelector(`.box-${BoxN}`).style.backgroundImage = "none";
+      document.querySelector(`.box-${BoxN +(pos)}`).style.backgroundImage = imgUrl;
+      BoxN = BoxN +(pos);
+      updatea(BoxN,imgUrl);
+     if (imgUrl === "url('tri.svg')" ) {
+    o=BoxN;
+    lol=BoxN;
+    updateRotation(lol,0);
+    document.querySelector(`.box-${BoxN-(pos)}`).style.transform = 'rotate(0deg)';
+}
+       flags.shield=1;
+       reset();
+       Shoot();
+       buttonreset();
+       startTeamBTimer();
+       team="b";
+       teampause=team;
+
+}
+
+function updatea(BoxN,imgUrl){
+  if (imgUrl === "url('CANON1.svg')") {
+    x=BoxN;
+  } else if (imgUrl === "url('shield.png')" ) {
+    y=BoxN;
+}
+else if (imgUrl === "url('rok1.svg')" || imgUrl === "url('rok.svg')"  ) {
+  z=BoxN;
+  if(rok==1)document.querySelector(`.box-${BoxN}`).style.backgroundImage ="url('rok.svg')";
+  leu(BoxN);
+}
+document.querySelector(`.box-${BoxN}`).addEventListener('click', clickHandler);
+}
+
+
+function highlightAdjacentBoxes(BoxN, imgUrl) {
+  if(BoxN+8<=63){
+    var backgroundImage3 = document.querySelector(`.box-${BoxN+8}`).style.backgroundImage;
+  }else{
+    var backgroundImage3="not exist";}
+  if(BoxN+1<=63){
+    var backgroundImage1 = document.querySelector(`.box-${BoxN+1}`).style.backgroundImage;}
+  else{
+        var backgroundImage1="not exist";}
+ if(BoxN-1>=0){var backgroundImage2 = document.querySelector(`.box-${BoxN-1}`).style.backgroundImage;}
+  else{
+    var backgroundImage2="not exist";
+  }
+  if(BoxN-8>=0){
+  var backgroundImage4 = document.querySelector(`.box-${BoxN-8}`).style.backgroundImage;
+}else{
+  var backgroundImage4="notexist"}
+
+  var top = backgroundImage4.includes("none");
+  var left = backgroundImage2.includes("none");
+  var right = backgroundImage1.includes("none");
+  var down = backgroundImage3.includes("none");
+
+blue();
+console.log(imgUrl);
+if (BoxN - 1 >= 0 && left) {
+document.querySelector(`.box-${BoxN - 1}`).style.backgroundColor = "green";
+}
+if (BoxN + 1 <= 63 && right) {
+  console.log(80808080)
+document.querySelector(`.box-${BoxN + 1}`).style.backgroundColor = "green";
+}
+
+if (BoxN - 8 >= 0 && top) {
+document.querySelector(`.box-${BoxN - 8}`).style.backgroundColor = "green";
+}
+if (BoxN + 8 <= 63 && down) {
+document.querySelector(`.box-${BoxN + 8}`).style.backgroundColor = "green";
+}
+
+function Remove(){
+for(let i =0; i<=63; i++){
+  document.querySelector(`.box-${i}`).removeEventListener('click', leftClickListener);
+  document.querySelector(`.box-${i}`).removeEventListener('click', rightClickListener);
+  document.querySelector(`.box-${i}`).removeEventListener('click', upClickListener);
+  document.querySelector(`.box-${i}`).removeEventListener('click', downClickListener);
+}
+}
+function leftClickListener(event) {
+if(document.querySelector(`.box-${BoxN - 1}`).style.backgroundColor === "green"){
+  if (BoxN >=1 && left ) {
+    move(BoxN , imgUrl,-1);}}
+Remove(BoxN , imgUrl);
+}
+
+function rightClickListener(event) {
+if(document.querySelector(`.box-${BoxN + 1}`).style.backgroundColor === "green"){
+  if (BoxN < 63 && right) {
+move(BoxN , imgUrl , 1);}}
+Remove(BoxN , imgUrl);
+                                         
+}
+
+function upClickListener(event) {
+if(document.querySelector(`.box-${BoxN - 8}`).style.backgroundColor === "green"){
+  if(BoxN>=8 && top){
+move(BoxN , imgUrl ,-8)}}
+Remove(BoxN, imgUrl);
+
+}
+
+function downClickListener(event) {
+if(document.querySelector(`.box-${BoxN + 8}`).style.backgroundColor === "green"){
+  if (BoxN <= 55 && down ) {
+move(BoxN , imgUrl , 8);}}
+Remove(BoxN , imgUrl);
+
+}
+
+if (BoxN - 1 >= 0) {
+document.querySelector(`.box-${BoxN - 1}`).addEventListener('click', leftClickListener);
+}
+if (BoxN + 1 <= 63) {
+document.querySelector(`.box-${BoxN + 1}`).addEventListener('click', rightClickListener);
+}
+if (BoxN - 8 >= 0) {
+document.querySelector(`.box-${BoxN - 8}`).addEventListener('click', upClickListener);
+}
+if (BoxN + 8 <= 63) {
+document.querySelector(`.box-${BoxN + 8}`).addEventListener('click', downClickListener);
+}
+
+}
+function clickHandler(event) {
+  console.log(team);
+  if (team !== "a" || Paused || Reached1) return;
+var BoxN = parseInt(event.target.className.match(/\d+/)[0], 10);
+var backgroundImage = document.querySelector(`.box-${BoxN}`).style.backgroundImage;
+if (  backgroundImage.includes("shield.png") || backgroundImage.includes("CANON1.svg") || backgroundImage.includes("rok1.svg") || backgroundImage.includes("rok.svg") || backgroundImage.includes("tri.svg") ) {
+console.log(1);
+highlightAdjacentBoxes(BoxN, imgUrl);}
+}
+}
+
+
+var pos = [10,12,13,15];
+var x=pos[1];
+var y=pos[0];
+var z=pos[2];
+console.log(z);
+var o = pos[3];
+
+
+document.querySelector(`.box-${x}`).addEventListener('click', setupObjectMovement(x, "url('CANON1.svg')"));
+document.querySelector(`.box-${y}`).addEventListener('click', setupObjectMovement(y, "url('shield.png')"));
+document.querySelector(`.box-${z}`).addEventListener('click', setupObjectMovement(z, "url('rok1.svg')"));
+document.querySelector(`.box-${o}`).addEventListener('click', setupObjectMovement(o, "url('tri.svg')"));
+
+function leu(l){
+  if (team !== "a") return;
+document.querySelector(`.box-${l}`).addEventListener('click', function(event){
+document.querySelectorAll(".but")[0].style.visibility="visible";
+document.querySelectorAll(".but")[1].style.visibility="visible";
+document.querySelectorAll(".xv")[0].style.visibility="hidden";
+document.querySelectorAll(".xv")[1].style.visibility="hidden";
+document.querySelectorAll(".xvb")[0].style.visibility="hidden";
+document.querySelectorAll(".xvb")[1].style.visibility="hidden";
+document.querySelectorAll(".butb")[0].style.visibility="hidden";
+document.querySelectorAll(".butb")[1].style.visibility="hidden";
+});
+}
+leu(13);
+var rok=0;
+function but1(direction) {
+  findDivWithImage();
+let  div=inp[0];
+if (direction === 'right' && document.querySelector(`.box-${div}`).style.backgroundImage.includes("rok.svg") && team=="a" && !Reached1) {
+document.querySelector(`.box-${div}`).style.backgroundImage = "url('rok1.svg')";
+rok=0;
+blue();
+reset();
+Shoot();
+startTeamBTimer();
+team="b";
+teampause=team;
+document.querySelectorAll(".but")[0].style.visibility="hidden";
+   document.querySelectorAll(".but")[1].style.visibility="hidden"; 
+} else if (direction === 'left'&& document.querySelector(`.box-${div}`).style.backgroundImage.includes("rok1.svg") && team=="a" && !Reached1) {
+console.log(1);
+document.querySelector(`.box-${div}`).style.backgroundImage = "url('rok.svg')";
+rok=1;
+blue();
+reset();
+Shoot();
+startTeamBTimer();
+team="b";
+teampause=team;
+document.querySelectorAll(".but")[0].style.visibility="hidden";
+   document.querySelectorAll(".but")[1].style.visibility="hidden"; 
+}
+}
+
+function visible(){
+  if (team !== "a") return;
+    document.querySelectorAll(".xv")[0].style.visibility="visible";
+    document.querySelectorAll(".xv")[1].style.visibility="visible";
+    document.querySelectorAll(".but")[0].style.visibility="hidden";
+   document.querySelectorAll(".but")[1].style.visibility="hidden"; 
+   document.querySelectorAll(".xvb")[0].style.visibility="hidden";
+   document.querySelectorAll(".xvb")[1].style.visibility="hidden";
+   document.querySelectorAll(".butb")[0].style.visibility="hidden";
+   document.querySelectorAll(".butb")[1].style.visibility="hidden"; 
+  // leu(inp[0]);   
+}
+
+var tri=15;
+function click(){
+  document.querySelector(`.box-${tri}`).addEventListener('click', visible);
+  for (let i = 0; i <= 63; i++) {
+    if (i === tri) {
+        continue; //skoip tr
+    }
+    document.querySelector(`.box-${i}`).removeEventListener('click', visible);
+}}
+
+click();
+
+let rotation = 0;
+if(rotation==360 || rotation==-360){
+  rotation=0;
+}
+function rotateLeft() {
+  rotation -= 90; 
+  if(rotation==360 || rotation==-360){
+    rotation=0;
+  }
+  updateRotation(tri,1);
+  console.log(rotation)
+}
+
+function rotateRight() {
+  rotation += 90; 
+  if(rotation==360 || rotation==-360){
+    rotation=0;
+  }
+  updateRotation(tri,1);
+  console.log(rotation)
+}
+
+function updateRotation(lol,pi) {
+  if(team=="a" && !Paused && !Reached1){
+  document.querySelector(`.box-${lol}`).style.transform = `rotate(${rotation}deg)`;
+  tri=lol;
+  blue();
+  click();
+  reset();
+  Shoot();
+  if(pi==1){
+  startTeamBTimer();
+  team="b";
+  teampause=team;}
+  document.querySelectorAll(".xv")[0].style.visibility="hidden";
+document.querySelectorAll(".xv")[1].style.visibility="hidden";}
+
+}
+
+/////////////////////////TIMERRRRRRRRRRR/////////////
+let teamATime = 200; // Initial time for Team A in seconds
+let teamBTime = 200; // Initial time for Team B in seconds
+let currentTeam = 'A'; // Current team ('A' or 'B')
+let teamATimer, teamBTimer;
+let Paused = false;
+let teamPause; // To keep track of the team when paused
+
+// Function to start the timer for Team A
+function startTeamATimer() {
+    clearInterval(teamBTimer); // Clear Team B's timer if running
+    teamATimer = setInterval(() => {
+        if (!Paused&& team=="a") {
+            teamATime--;
+            document.getElementById('teamATime').textContent = teamATime;
+            if (teamATime <= 0) {
+                clearInterval(teamATimer);
+                alert('Team A\'s time is up! Team B wins.');
+                location.reload();
+            }
+        }
+    }, 1000);
+}
+
+// Function to start the timer for Team B
+function startTeamBTimer() {
+    clearInterval(teamATimer); // Clear Team A's timer if running
+    teamBTimer = setInterval(() => {
+        if (!Paused && team=="b") {
+            teamBTime--;
+            document.getElementById('teamBTime').textContent = teamBTime;
+            if (teamBTime <= 0) {
+                clearInterval(teamBTimer);
+                alert('Team B\'s time is up! Team A wins.');
+                location.reload();
+            }
+        }
+    }, 1000);
+}
+
+// Initial setup 
+startTeamATimer();
+
+// Function to resume the
+function resumeTimers() {
+    if (team === "a") {
+        startTeamATimer();
+    } else if (team === "b") {
+        startTeamBTimer();
+    }
+}
+
+// 
+function play() {
+    Paused = !Paused;
+    if (Paused) {
+        teampause = team; // S
+    } else {
+        team = teampause; // 
+        resumeTimers();
+    }
+}
+
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////// SIDE BBB/////////////////////////////////////
+
+
+
+
+function moveRb(Boxb ,yok ) {
+
+ 
+ document.querySelector(`.box-${Boxb - 1}`).style.backgroundColor = "#64c5e6";
+ if(Boxb + 1<=63){
+ document.querySelector(`.box-${Boxb + 1}`).style.backgroundColor = "#64c5e6";}
+ // Add an event listener to the left box
+ document.querySelector(`.box-${Boxb}`).removeEventListener('click', clickHandlerb);
+
+     document.querySelector(`.box-${Boxb}`).style.backgroundImage = "none";
+     document.querySelector(`.box-${Boxb + (yok)}`).style.backgroundImage = "url('canon2.svg')";
+     Boxb= Boxb + (yok);
+    // pos = Boxc;
+     //console.log(4554)
+     document.querySelector(`.box-${Boxb}`).addEventListener('click', clickHandlerb);
+     reset1();
+     Shoot1();
+     buttonreset();
+     startTeamATimer();
+    team = "a";
+    teampause=team;
+   
+}
+
+
+var currentBoxb = 63;
+
+document.querySelector(`.box-${currentBoxb}`).addEventListener('click', clickHandlerb);
+
+function highlightAdjacentBoxesb(Boxb) {
+//console.log(55)
+//console.log(Boxb);
+if(Boxb+1<=63){
+var backgroundImage1 = document.querySelector(`.box-${Boxb+1}`).style.backgroundImage;}
+else{
+  var backgroundImage1 = "none"}
+var backgroundImage2 = document.querySelector(`.box-${Boxb-1}`).style.backgroundImage;
+var left = backgroundImage2.includes("none");
+var right = backgroundImage1.includes("none");
+blue();
+if (Boxb - 1 > 55 && left ) {
+console.log(8778);
+document.querySelector(`.box-${Boxb - 1}`).style.backgroundColor = "green";
+}
+if (Boxb + 1 <= 63 && right) {
+document.querySelector(`.box-${Boxb + 1}`).style.backgroundColor = "green";}
+
+
+function Removeb(){
+if(Boxb - 1>55 ){
+document.querySelector(`.box-${Boxb - 1}`).removeEventListener('click', leftClickListenerb);
+if (Boxb + 1 <= 63){
+document.querySelector(`.box-${Boxb + 1}`).removeEventListener('click', rightClickListenerb);}
+
+}else{
+document.querySelector(`.box-${Boxb + 1}`).removeEventListener('click', rightClickListenerb);
+}
+}
+
+function leftClickListenerb(event) {
+console.log(33223)
+if (Boxb - 1 > 55) {
+  document.querySelector(`.box-${Boxb - 1}`).style.backgroundColor = "#64c5e6";
+}if(Boxb+1<=63){
+document.querySelector(`.box-${Boxb + 1}`).style.backgroundColor = "#64c5e6";}
+if (Boxb >= 55 && left) {
+moveRb(Boxb,-1);}
+Removeb(Boxb);
+}
+
+function rightClickListenerb(event) {
+if (Boxb - 1 >=55) {
+  document.querySelector(`.box-${Boxb - 1}`).style.backgroundColor = "#64c5e6";
+}if(Boxb+1<=63){
+document.querySelector(`.box-${Boxb + 1}`).style.backgroundColor = "#64c5e6";}
+if (Boxb < 63 && right) {
+moveRb(Boxb , 1);  } 
+Removeb(Boxb);
+                                         
+}
+
+if (Boxb - 1 > 55) {
+console.log(9090809)
+document.querySelector(`.box-${Boxb - 1}`).addEventListener('click', leftClickListenerb);
+}
+if (Boxb + 1 <= 63) {
+console.log(7900)
+document.querySelector(`.box-${Boxb + 1}`).addEventListener('click', rightClickListenerb);
+
+}
+}
+function clickHandlerb(event) {
+  if (team !== "b" || Paused || Reached) return;
+//console.log(event.target.className);
+var Boxb = parseInt(event.target.className.match(/\d+/)[0], 10);
+highlightAdjacentBoxesb(Boxb);
+}
+    
+//---------------------------------------------------------------------------------------------------------------------------------------------
+//function titan(){
+var lolb=0;
+function setupObjectMovementb(BoxNb, imgUrlb) {
+console.log(78);
+document.querySelector(`.box-${BoxNb}`).addEventListener('click', clickHandlerb);
+
+function moveb(BoxNb,imgUrlb,posu) {
+
+  if (BoxNb - 8 >= 0) {
+    document.querySelector(`.box-${BoxNb - 8}`).style.backgroundColor = "#64c5e6";
+}if (BoxNb + 8 <= 63) {
+     document.querySelector(`.box-${BoxNb + 8}`).style.backgroundColor = "#64c5e6";}
+if (BoxNb -1 >=0) {
+     document.querySelector(`.box-${BoxNb - 1}`).style.backgroundColor = "#64c5e6";}
+if (BoxNb + 1 <= 63) {
+       document.querySelector(`.box-${BoxNb + 1}`).style.backgroundColor = "#64c5e6";}
+  document.querySelector(`.box-${BoxNb}`).removeEventListener('click', clickHandlerb);
+      document.querySelector(`.box-${BoxNb}`).style.backgroundImage = "none";
+      document.querySelector(`.box-${BoxNb +(posu)}`).style.backgroundImage = imgUrlb;
+      BoxNb = BoxNb +(posu);
+      updateb(BoxNb,imgUrlb);
+      if (imgUrlb === "url('tri2.svg')" ) {
+        ob=BoxNb;
+        lolb=BoxNb;
+        updateRotationb(lolb,0);
+        document.querySelector(`.box-${BoxNb-(posu)}`).style.transform = 'rotate(0deg)'; 
+        }
+       //flags.shield=1;
+       reset();
+       Shoot1();
+       buttonreset();
+        startTeamATimer();
+        team="a";
+        teampause=team;
+
+}
+function updateb(BoxNb,imgUrlb){
+  if (imgUrlb === "url('shield2.svg')" ) {
+    xb=BoxNb;
+  } else if (imgUrlb === "url('castle2.svg')") {
+    yb=BoxNb;
+}
+else if (imgUrlb === "url('rok2.svg')" || imgUrlb === "url('rok3.svg')"  ) {
+  zb=BoxNb;
+  if(rokb==1)document.querySelector(`.box-${BoxNb}`).style.backgroundImage ="url('rok3.svg')";
+  leub(BoxNb);
+}
+  document.querySelector(`.box-${BoxNb}`).addEventListener('click', clickHandlerb);
+}
+
+
+
+function highlightAdjacentBoxesb(BoxNb, imgUrlb) {
+  if(BoxNb+1<=63){
+    var backgroundImage1 = document.querySelector(`.box-${BoxNb+1}`).style.backgroundImage;
+  } else{
+    var backgroundImage1="notexist";
+  }
+  if(BoxNb-1>=0){ var backgroundImage2 = document.querySelector(`.box-${BoxNb-1}`).style.backgroundImage;}
+  else{
+    var backgroundImage2="notexist";}
+  if(BoxNb-8>=0){
+  var backgroundImage4 = document.querySelector(`.box-${BoxNb-8}`).style.backgroundImage;
+} else{
+  var backgroundImage4="notexist";
+}
+if(BoxNb+8<=63){
+  var backgroundImage3 = document.querySelector(`.box-${BoxNb+8}`).style.backgroundImage;}
+  else{
+    var backgroundImage3="notexist";}
+
+
+  var leftb = backgroundImage2.includes("none");
+  var rightb = backgroundImage1.includes("none");
+  var topb = backgroundImage4.includes("none");
+  var downb = backgroundImage3.includes("none");
+
+blue();
+console.log(imgUrlb);
+if (BoxNb - 1 >= 0 && leftb) {
+document.querySelector(`.box-${BoxNb - 1}`).style.backgroundColor = "green";
+}
+if (BoxNb + 1 <= 63 && rightb) {
+document.querySelector(`.box-${BoxNb+ 1}`).style.backgroundColor = "green";
+}
+
+if (BoxNb - 8 >= 0 && topb) {
+document.querySelector(`.box-${BoxNb - 8}`).style.backgroundColor = "green";
+}
+if (BoxNb + 8 <= 63 && downb) {
+document.querySelector(`.box-${BoxNb + 8}`).style.backgroundColor = "green";
+}
+
+function Removeb(){
+for(let i =0; i<=63; i++){
+  document.querySelector(`.box-${i}`).removeEventListener('click', leftClickListenerb);
+  document.querySelector(`.box-${i}`).removeEventListener('click', rightClickListenerb);
+  document.querySelector(`.box-${i}`).removeEventListener('click', upClickListenerb);
+  document.querySelector(`.box-${i}`).removeEventListener('click', downClickListenerb);
+}
+}
+
+
+function leftClickListenerb(event) {
+  
+if(document.querySelector(`.box-${BoxNb - 1}`).style.backgroundColor === "green"){
+  if (BoxNb>0 && leftb) {
+moveb(BoxNb , imgUrlb ,-1);}}
+Removeb(BoxNb , imgUrlb);
+}
+
+function rightClickListenerb(event) {
+if(document.querySelector(`.box-${BoxNb + 1}`).style.backgroundColor === "green"){
+  if (BoxNb<=62 && rightb) {
+moveb(BoxNb , imgUrlb,1);}}
+
+Removeb(BoxNb , imgUrlb);
+                                         
+}
+
+function upClickListenerb(event) {
+
+if(document.querySelector(`.box-${BoxNb - 8}`).style.backgroundColor === "green"){
+  if(BoxNb>=7 && topb){
+moveb(BoxNb , imgUrlb , -8);}}
+Removeb(BoxNb, imgUrlb);
+
+}
+
+function downClickListenerb(event) {
+if(document.querySelector(`.box-${BoxNb + 8}`).style.backgroundColor === "green"){
+  if (BoxNb <=55 && downb ){
+moveb(BoxNb , imgUrlb , +8);}}
+Removeb(BoxNb , imgUrlb);
+
+}
+
+if (BoxNb - 1 >= 0) {
+document.querySelector(`.box-${BoxNb - 1}`).addEventListener('click', leftClickListenerb);
+}
+if (BoxNb + 1 <= 63) {
+document.querySelector(`.box-${BoxNb + 1}`).addEventListener('click', rightClickListenerb);
+}
+if (BoxNb - 8 >= 0) {
+document.querySelector(`.box-${BoxNb- 8}`).addEventListener('click', upClickListenerb);
+}
+if (BoxNb + 8 <= 63) {
+document.querySelector(`.box-${BoxNb + 8}`).addEventListener('click', downClickListenerb);
+}
+
+}
+function clickHandlerb(event) {
+  console.log(team);
+  if (team !== "b" || Paused || Reached) return;
+var BoxNb = parseInt(event.target.className.match(/\d+/)[0], 10);
+var backgroundImage = document.querySelector(`.box-${BoxNb}`).style.backgroundImage;
+if (backgroundImage.includes("shield2.svg") || backgroundImage.includes("castle2.svg") || backgroundImage.includes("rok2.svg") || backgroundImage.includes("rok3.svg") || backgroundImage.includes("tri2.svg") ) {
+console.log(1);
+highlightAdjacentBoxesb(BoxNb, imgUrlb);}}
+} 
+
+var posb = [49,52,54,50];
+var xb=posb[1];
+var yb=posb[0];
+var zb=posb[2];
+var ob=posb[3];
+
+document.querySelector(`.box-${xb}`).addEventListener('click', setupObjectMovementb(xb, "url('shield2.svg')"));
+document.querySelector(`.box-${yb}`).addEventListener('click', setupObjectMovementb(yb,"url('castle2.svg')" ));
+document.querySelector(`.box-${zb}`).addEventListener('click', setupObjectMovementb(zb, "url('rok2.svg')"));
+document.querySelector(`.box-${ob}`).addEventListener('click', setupObjectMovementb(ob, "url('tri2.svg')"));
+
+
+    
+function leub(lb){
+  console.log(lb);
+  if (team !== "b") return;
+  document.querySelector(`.box-${lb}`).addEventListener('click', function(event){
+  document.querySelectorAll(".butb")[0].style.visibility="visible";
+  document.querySelectorAll(".butb")[1].style.visibility="visible";
+  document.querySelectorAll(".xvb")[0].style.visibility="hidden";
+  document.querySelectorAll(".xvb")[1].style.visibility="hidden";
+  document.querySelectorAll(".but")[0].style.visibility="hidden";
+  document.querySelectorAll(".but")[1].style.visibility="hidden";
+  document.querySelectorAll(".xv")[0].style.visibility="hidden";
+  document.querySelectorAll(".xv")[1].style.visibility="hidden"; 
+  });
+  }
+  leub(54);
+  var rokb=0;
+  function but1b(direction) {
+  findDivWithImage();
+  let  divb=inp[7];
+  if (direction === 'right' && document.querySelector(`.box-${divb}`).style.backgroundImage.includes("rok3.svg")&& team=="b" && !Reached) {
+ // console.log(1);
+  
+  document.querySelector(`.box-${divb}`).style.backgroundImage = "url('rok2.svg')";
+  rokb=0;
+  blue();
+  reset();
+  startTeamATimer();
+  team="a";
+  teampause=team;
+  document.querySelectorAll(".butb")[0].style.visibility="hidden";
+     document.querySelectorAll(".butb")[1].style.visibility="hidden"; 
+  } else if (direction === 'left'&& document.querySelector(`.box-${divb}`).style.backgroundImage.includes("rok2.svg") && team=="b" && !Reached) {
+  console.log(1);
+  document.querySelector(`.box-${divb}`).style.backgroundImage = "url('rok3.svg')";
+  rokb=1;
+  reset();
+  startTeamATimer();
+  team="a";
+  teampause=team;
+  blue();
+  document.querySelectorAll(".butb")[0].style.visibility="hidden";
+   document.querySelectorAll(".butb")[1].style.visibility="hidden"; 
+    
+  }
+  }
+  
+
+
+
+  function visibleb(){
+    if (team !== "b") return;
+      document.querySelectorAll(".xvb")[0].style.visibility="visible";
+      document.querySelectorAll(".xvb")[1].style.visibility="visible";
+      document.querySelectorAll(".butb")[0].style.visibility="hidden";
+     document.querySelectorAll(".butb")[1].style.visibility="hidden"; 
+     document.querySelectorAll(".but")[0].style.visibility="hidden";
+     document.querySelectorAll(".but")[1].style.visibility="hidden"; 
+     document.querySelectorAll(".xv")[0].style.visibility="hidden";
+     document.querySelectorAll(".xv")[1].style.visibility="hidden"; 
+    // console.log(inpb[0])
+    // leub(inp[7]);   
+  }
+  var trib=50;
+  function clickb(){
+    document.querySelector(`.box-${trib}`).addEventListener('click', visibleb);
+    for (let i = 0; i <= 63; i++) {
+      if (i === trib) {
+          continue; //skoip tr
+      }
+      document.querySelector(`.box-${i}`).removeEventListener('click', visibleb);
+  }}
+  
+  clickb();
+  
+  let rotationb = 0;
+  if(rotationb==360 || rotationb==-360){
+    rotationb=0;
+  }
+  function rotateLeftb() {
+    rotationb -= 90; 
+    if(rotationb==360 || rotationb==-360){
+      rotationb=0;
+    }
+    updateRotationb(trib,1);
+    console.log(rotationb)
+  }
+  
+  function rotateRightb() {
+    rotationb += 90; 
+    if(rotationb==360 || rotationb==-360){
+      rotationb=0;
+    }
+    updateRotationb(trib,1);
+    console.log(rotationb)
+  }
+  
+  function updateRotationb(lolb,p) {
+    if(team=="a" && !Paused && !Reached){
+    document.querySelector(`.box-${lolb}`).style.transform = `rotate(${rotationb}deg)`;
+    trib=lolb;
+    blue();
+    clickb();
+    if(p==1){
+    startTeamATimer();
+    reset();
+    team="a";
+    teampause=team;}
+    document.querySelectorAll(".xvb")[0].style.visibility="hidden";
+  document.querySelectorAll(".xvb")[1].style.visibility="hidden";}
+    
+  }
+  
+  
+//////////////BULLLLET2////////////////////////////////////////////////////////////
+
+document.querySelector('.bullet1').style.top = '810px';
+document.querySelector('.bullet1').style.left = '1070px';
+var bullet1 = document.querySelector('.bullet1');
+function centerBulletInDiv1(toti, m) {
+  let targetDiv = document.querySelector(`.box-${toti}`);
+  let bulletRect = bullet1.getBoundingClientRect();
+  let centeredLeft = targetDiv.offsetLeft + (targetDiv.offsetWidth / 2) - (bulletRect.width / 2);
+  let centeredTop = targetDiv.offsetTop + (targetDiv.offsetHeight / 2) - (bulletRect.height / 2);
+  bullet1.style.left = `${centeredLeft}px`;
+  bullet1.style.top = `${centeredTop + m}px`; 
+}
+
+
+setTimeout(() => {
+  centerBulletInDiv1(63,0);
+}, 10);
+
+
+
+
+var posx1 = document.querySelector('.bullet1').style.top;
+var numberX1 = parseInt(posx1, 10);
+var currentAnimationFrame1;
+var flags1 = {
+  s: 1,
+  flag: 1,
+  shield: 1,
+  collision: 0,
+  direc: ""
+};
+
+
+function Shoot1() {
+  numberX1 -= 5;
+  document.querySelector('.bullet1').style.top = numberX1 + 'px';
+  console.log(1);
+  if (flags1.shield == 0) {
+    return;
+  }
+  if (flags1.s === 1) {
+    callGameFunctions1([3,2,5, 6],6);
+    collison1(0,1,5);
+    collison1(7,8,5);
+    
+  }
+
+  const a1 = (document.querySelector(`.box-${inp[0]}`).style.backgroundImage.includes("rok1.svg") && flags1.flag == 0);
+  const c1 = (document.querySelector(`.box-${inp[0]}`).style.backgroundImage.includes("rok.svg") && flags1.flag == 0);
+  const b1 = (document.querySelector(`.box-${inp[1]}`).style.backgroundImage.includes("tri.svg")&& flags1.flag == 2);
+  
+  const d1 = (document.querySelector(`.box-${inp[7]}`).style.backgroundImage.includes("rok2.svg") && flags1.flag == 3);
+  const e1 = (document.querySelector(`.box-${inp[7]}`).style.backgroundImage.includes("rok3.svg") && flags1.flag == 3);
+  const f1 = (document.querySelector(`.box-${inp[8]}`).style.backgroundImage.includes("tri2.svg")&& flags1.flag == 5);
+  
+  //console.log(c);
+
+  if (numberX1 < 50) {
+    document.querySelector('.bullet1').style.visibility = "hidden";
+    setTimeout(function() {
+      document.querySelector('.bullet1').style.visibility = "visible";
+      reset1();
+      numberX1 = 810;
+    }, 500);
+  } else if (flags1.s === 1) {
+    currentAnimationFrame1 = requestAnimationFrame(Shoot1);
+    Reached1=1;
+  }
+  if (flags1.s == 0) {
+    if (c1 || e1) {
+      moveRightbullet1();
+      flags1.direc = "right";
+      flags1.collision = 0;
+      console.log(1);
+    } else if (a1 || d1) {
+      moveLeftbullet1();
+      flags1.direc = "left";
+      flags1.collision = 0;
+    } else if ((b1 && (rotation == -270 || rotation == 90)) || (f1 && (rotationb == -270 || rotationb == 90))){
+      moveRightbullet1();
+      console.log(4511)
+      flags1.direc = "right";
+      flags1.collision = 0;
+      console.log(1);
+    } else if( (b1 && (rotation == -180 || rotation == 180))|| (f1 && (rotationb == -180 || rotationb == 180))){
+      moveLeftbullet1();
+      flags1.direc = "left";
+      flags1.collision = 0;
+    }
+    else if (b1 || f1) {
+      reset1();
+    }
+  }
+}
+function callGameFunctions1(gameNumbers,oi) {
+  gameNumbers.forEach(function(gameNumber) {
+    game1(gameNumber,oi);
+  });
+}
+
+function reset1() {
+  console.log(8989)
+  cancelAnimationFrame(currentAnimationFrame1);
+  findDivWithImage();
+  centerBulletInDiv1(inp[9],0);
+  flags1.s = 1;
+  flags1.flag= 1;
+  flags1.shield= 1;
+  flags1.collision= 0;
+  flags1.direc="";
+  numberX1 = 807; 
+  Reached1=0;// Reset top position
+  return;
+}
+//Shoot1();
+
+var countl1=0;
+function moveLeftbullet1() {
+  console.log(45)
+  cancelAnimationFrame(currentAnimationFrame1); // Cancel any ongoing animation
+  var leftbullet1 = parseInt(bullet1.style.left);
+  leftbullet1 -= 5;
+  countl1++; 
+  bullet1.style.left = leftbullet1 + 'px';
+  flags1.flag = 1;
+  flags1.collision= 0;
+  //callGameFunctions([3, 2, 5, 6],38);
+  if(countl1>17){
+    callGameFunctions1([3, 2, 5, 6],39);
+   collison1(0,1,51);
+   collison1(7,8,51);
+    countl1=0;
+    console.log(flags1.collision)
+    if(flags1.collision==1 || flags1.collision==2){flags1.direc="left";gamecollision1(); return;} }
+  if (leftbullet1 < 330 || flags1.shield == 0) {
+    reset1();
+    countl1=0;
+    console.log(1);
+    return;
+  } else {
+    currentAnimationFrame1 = requestAnimationFrame(moveLeftbullet1);
+    
+  }
+}
+
+
+var countr1=0;
+function moveRightbullet1() {
+  cancelAnimationFrame(currentAnimationFrame1); // Cancel any ongoing animation
+  var leftbullet1 = parseInt(bullet1.style.left);
+  leftbullet1 += 5;
+  countr1++;
+  console.log(452)
+  bullet1.style.left = leftbullet1 + 'px';
+  flags1.flag = 1;
+  flags1.collision= 0;
+ if(countr1>17){
+  callGameFunctions1([3, 2, 5, 6],39);
+  collison1(0,1,51);
+  collison1(7,8,51);
+  countr1=0;
+  console.log(flags1.collision)
+  if(flags1.collision==1 || flags1.collision==2){ flags1.direc="right"; gamecollision1(); return;}} 
+  if (leftbullet1 > 1110 || flags1.shield == 0) {
+    reset1();
+    countr1=0;
+    return;
+  } else {
+    currentAnimationFrame1 = requestAnimationFrame(moveRightbullet1); 
+}
+}
+
+var countt1=0;
+function moveUpbullet1() {
+  cancelAnimationFrame(currentAnimationFrame1); 
+    var topbullet1 = parseInt(bullet1.style.top);
+  topbullet1 -= 5;
+  countt1++;
+  bullet1.style.top = topbullet1+ 'px';
+  flags1.flag = 1;
+  flags1.collision= 0;
+  //callGameFunctions([3, 2, 5, 6]);
+ if(countt1>20){
+  console.log(56656)
+  callGameFunctions1([3, 2, 5, 6],57);
+  collison1(0,1,57);
+  collison1(7,8,57);
+  countt1=0;
+  console.log(flags1.collision)
+  if(flags1.collision==1 || flags1.collision==2){ flags1.direc="up"; gamecollision1(); return;}} 
+
+  if (topbullet1 < 90 || flags1.shield == 0) {
+    reset1();
+    console.log(1);
+    countt1=0; 
+    return;
+  } else {
+    currentAnimationFrame1 = requestAnimationFrame(moveUpbullet1);
+    // Continue moving up
+  }
+}
+var countd1=0;
+function moveDownbullet1() {
+  cancelAnimationFrame(currentAnimationFrame1); 
+  var topbullet1 = parseInt(bullet1.style.top);
+  topbullet1 += 5;
+  countd1++;
+ bullet1.style.left =  (bullet1.style.left+60) + 'px';
+  bullet1.style.top = topbullet1 + 'px';
+  flags1.flag = 1;
+  flags1.collision= 0;
+  if(countd1>20){
+    console.log(56656)
+    callGameFunctions1([3, 2, 5, 6],57);
+    collison1(0,1,57);
+    collison1(7,8,57);
+    countd=0;
+    console.log(flags1.collision)
+    if(flags1.collision==1 || flags1.collision==2){ flags1.direc="down";gamecollision1(); return;}}
+  if (topbullet1 > 830 || flags1.shield == 0) { 
+    reset1();
+    console.log(1);
+    countd1=0;
+    return;
+  } else {
+    currentAnimationFrame1 = requestAnimationFrame(moveDownbullet1); // Continue moving down
+  }
+}
+
+
+function game1(pos,poi){
+//console.log(poi)
+  let div1 = document.querySelector('.bullet1');
+  let bulletPosition = div1.getBoundingClientRect();
+  findDivWithImage();
+  let divric = document.querySelector(`.box-${inp[pos]}`);
+  let inpPosition = divric.getBoundingClientRect();
+console.log(Math.abs(Math.abs(inpPosition.top) - Math.abs(bulletPosition.top)));
+  console.log(Math.abs(Math.abs(inpPosition.left) - Math.abs(bulletPosition.left)));
+ //console.log(Math.abs(inpPosition.top) - Math.abs(bulletPosition.top) < 5 && Math.abs(Math.abs(inpPosition.left) - Math.abs(bulletPosition.left)) < 34);
+  if (Math.abs(Math.abs(inpPosition.top) - Math.abs(bulletPosition.top)) < poi && Math.abs(Math.abs(inpPosition.left) - Math.abs(bulletPosition.left)) <= 38.5) {
+      console.log('Collision detected! Stopping shooting.');
+      if(pos==2||pos==6){
+        if(pos==2){
+        alert("game over, B WINS");}
+        else{
+          alert("game over, A WINS");
+        }
+        location.reload();
+      }
+      if(pos==3||pos==5){
+        reset1();
+        flags1.shield=0;
+        console.log("shield")
+          return;
+  }
+}
+}
+
+function collison1(repa,repb,limitx) {
+    let div1 = document.querySelector('.bullet1');
+    let bulletPosition = div1.getBoundingClientRect();
+    findDivWithImage();
+    //console.log(inp);
+    let divric = document.querySelector(`.box-${inp[repa]}`);
+    let divtri = document.querySelector(`.box-${inp[repb]}`);
+    let inpPosition = divric.getBoundingClientRect();
+    let triPosition = divtri.getBoundingClientRect(); 
+   //console.log(Math.abs(inpPosition.top) - Math.abs(bulletPosition.top));
+   //console.log(Math.abs(Math.abs(inpPosition.left) - Math.abs(bulletPosition.left)));
+    if (Math.abs(Math.abs(inpPosition.top) - Math.abs(bulletPosition.top)) < limitx && Math.abs(Math.abs(inpPosition.left) - Math.abs(bulletPosition.left)) <= 38) {
+        console.log('Collision detected! Stop.');
+        flags1.s = 0;
+        if(repa==0){
+        flags1.flag = 0;}
+        else{
+          flags1.flag = 3;
+        }
+       flags1.collision=1;
+       centerBulletInDiv1(inp[repa],0);
+    }
+    console.log(Math.abs(Math.abs(triPosition.top) - Math.abs(bulletPosition.top)));
+    console.log(Math.abs(Math.abs(triPosition.left) - Math.abs(bulletPosition.left)));
+    console.log(Math.abs(triPosition.top) - Math.abs(bulletPosition.top) < 5 && Math.abs(Math.abs(triPosition.left) - Math.abs(bulletPosition.left)) < 33);
+    if (Math.abs(Math.abs(triPosition.top) - Math.abs(bulletPosition.top)) < limitx && Math.abs(Math.abs(triPosition.left) - Math.abs(bulletPosition.left)) < 39) {
+        console.log('Collision detected! Stopping shooting.');
+        flags1.s = 0;
+        if(repb==1){
+        flags1.flag = 2;}
+        else{
+          flags1.flag = 5;
+        }
+        flags1.collision=2;
+       // console.log(inp[repb])
+        centerBulletInDiv1(inp[repb],0);
+    }
+}
+
+
+function gamecollision1() {
+  cancelAnimationFrame(currentAnimationFrame1);
+  findDivWithImage();
+  let a = (document.querySelector(`.box-${inp[0]}`).style.backgroundImage.includes("rok1.svg") && flags1.flag == 0);
+  let c = (document.querySelector(`.box-${inp[0]}`).style.backgroundImage.includes("rok.svg") && flags1.flag == 0);
+  let b = (document.querySelector(`.box-${inp[1]}`).style.backgroundImage.includes("tri.svg") && flags1.flag == 2);
+  
+  let d = (document.querySelector(`.box-${inp[7]}`).style.backgroundImage.includes("rok2.svg") && flags1.flag == 3);
+  let e = (document.querySelector(`.box-${inp[7]}`).style.backgroundImage.includes("rok3.svg") && flags1.flag == 3);
+  let f = (document.querySelector(`.box-${inp[8]}`).style.backgroundImage.includes("tri2.svg")&& flags1.flag == 5);
+  
+
+  console.log(1223);
+  console.log(flags1.collision);
+
+  // Handle collision type 1
+  if (flags1.collision == 1) {
+    cancelAnimationFrame(currentAnimationFrame1);
+    switch (flags1.direc) {
+      case "left":
+        if (c || e) {
+          moveDownbullet1();
+        }
+        if (a || d) {
+        moveUpbullet1();
+        }
+        return;
+      case "right":
+        if (c || e) {
+
+         moveUpbullet1();
+        }
+        if (a || d) {
+          moveDownbullet1();
+        }
+        return;
+      case "up":
+          if(c || e){
+            moveRightbullet1();
+          }
+          if(a ||d){
+            moveLeftbullet1();
+          }
+          return;
+      case "down":
+         if(c ||e){
+          moveLeftbullet1();
+         }
+         if(a ||d){
+          moveRightbullet1();
+        }
+        return;
+    }
+  }
+
+  if (flags1.collision == 2) {
+    console.log(34)
+    cancelAnimationFrame(currentAnimationFrame1);
+    switch (flags1.direc) {
+      case "right":
+        if ((b && (rotation == 270 || rotation == -90)) || (f && (rotationb == 270 || rotationb == -90))) {
+          moveUpbullet1();
+        } else if ((b && (rotation == 180 || rotation == -180)) || (f && (rotationb == 180 || rotationb == -180))) {
+          moveDownbullet1() // Delay before moving down
+        } else {
+          reset1();
+        }
+        return;
+      case "left":
+        if ((b && (rotation == -270 || rotation == 90))|| (f && (rotationb == -270 || rotationb == 90))) {
+          moveDownbullet1()
+        } else if ((b && rotation == 0) || (f && rotationb == 0)) {
+          console.log(34);
+          moveUpbullet1()
+        } else {
+          reset1();
+        }
+        return;
+        case "up":
+          if ((b && (rotation == -270 || rotation == 90))|| (f && (rotationb == -270 || rotationb == 90))) {
+            moveRightbullet1();
+          }
+         else  if ((b && (rotation == 180 || rotation == -180)) || (f && (rotationb == 180 || rotationb == -180))) {
+          moveLeftbullet1();
+         }
+         else {
+          reset1();
+        }
+         return;
+         case "down":
+          if ((b && (rotation == 270 || rotation == -90)) || (f && (rotationb == 270 || rotationb == -90))){
+            moveLeftbullet1();}
+   
+          else if( (b && rotation == 0)|| (f && rotationb == 0)){
+              moveRightbullet1();}
+        
+          else {
+            reset1();
+          }
+  }
+}
+}
+
+
+
+
+
+
+
+

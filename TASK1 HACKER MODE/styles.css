@@ -1,0 +1,381 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: black;
+  }
+  
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr); 
+    grid-auto-rows: 100px; 
+    gap: 2px; 
+    width: 800px; 
+    margin: 50px auto; 
+    border: 5px solid rgba(56, 180, 225, 0.629);
+    border-radius: 10px;
+   
+  }
+  .team-timer {
+    font-size: 2em;
+    margin: 10px;
+    color:blue;
+}
+
+
+
+   .timer{
+    position: absolute;
+    top: 40px;
+   }
+
+  .box {
+    background-color: #64c5e6; 
+    border: 1px solid black; 
+    border-radius: 7px;
+    background-size: cover;
+
+  }
+
+  
+  
+  .but,.butb {
+    background-color: transparent;
+    border: 3px solid rgb(117, 193, 218);
+    border-radius: 30px;
+    color:#64c5e6;
+    padding: 10px 20px;
+    text-align: center;
+    display: inline-block;
+    font-size: 16px;
+    font-style:bold;
+    visibility: hidden;
+
+    }
+
+    .tot {
+      background-color: transparent;
+      border: 3px solid rgb(117, 193, 218);
+      border-radius: 30px;
+      color:#64c5e6;
+      padding: 10px 20px;
+      text-align: center;
+      display: inline-block;
+      font-size: 16px;
+      font-style:bold;
+  
+      }
+
+      
+    .op{
+      position:absolute;
+      top:150px;
+      right:20px;
+
+    }
+
+    .xv,.xvb{
+      background-color: transparent;
+      border: 3px solid rgb(116, 181, 202);
+      border-radius: 40px;
+      color:#64c5e6;
+      padding: 10px 20px;
+      text-align: center;
+      display: inline-block;
+      font-size: 20px;
+      font-style:bold;
+      visibility: hidden;
+    }
+  
+    .kk{
+      position:absolute;
+      top:150px;
+      left:70px;
+
+    }
+    .kkb{
+      position:absolute;
+      top:650px;
+      left:70px;
+
+    }
+
+    .ki{
+      position:absolute;
+      top:170px;
+      left:70px;
+    }
+    .kib{
+      position:absolute;
+      top:670px;
+      left:70px;
+    }
+
+
+    .bullet {
+      position:absolute;
+      top:90px;
+      left:670px;
+      z-index: 10;
+      overflow: visible;
+    }
+    
+    .bullet1{
+      position:absolute;
+      top:810px;
+      left:1075px;
+      z-index: 10;
+      overflow: visible;
+    
+    }
+     
+    #undoButton{
+      background-color:transparent;
+      position:absolute;
+      color:#64c5e6;
+      top:270px;
+      border-radius: 10px;
+      padding: 7px;
+      height: 30px;
+      width: 60px;
+      border: 3px solid  #64c5e6;
+      left:30px;
+    }
+
+    #redoButton{
+      background-color:transparent;
+      position:absolute;
+      color:#64c5e6;
+      top:270px;
+      border-radius: 10px;
+      padding: 7px;
+      height: 30px;
+      width: 60px;
+      border: 3px solid  #64c5e6;
+      left:100px;
+    }
+
+      
+    #undoButtonR{
+      background-color:transparent;
+      position:absolute;
+      color:#64c5e6;
+      top:730px;
+      border-radius: 10px;
+      padding: 7px;
+      height: 30px;
+      width: 60px;
+      border: 3px solid  #64c5e6;
+      left:30px;
+    }
+
+    #redoButtonR{
+      background-color:transparent;
+      position:absolute;
+      color:#64c5e6;
+      top: 730px;
+      border-radius: 10px;
+      padding: 7px;
+      height: 30px;
+      width: 60px;
+      border: 3px solid  #64c5e6;
+      left:100px;
+    }
+
+    @media screen and (max-width:470px){
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: black;
+      }
+
+      .grid-container {
+        display: grid;
+        grid-template-columns: repeat(8, 1fr); 
+        grid-auto-rows: 50px; 
+        gap: 2px; 
+        width: 400px; 
+        margin: 5px auto; 
+        border: 5px solid rgba(56, 180, 225, 0.629);
+        border-radius: 10px;
+       
+      }
+      
+       
+  .team-timer {
+    font-size: 1.2em;
+    margin: 1px;
+
+    color:blue;
+}
+
+   .timer{
+    position: absolute;
+    top: 450px;
+   }
+
+  .box {
+    background-color: #64c5e6; 
+    border: 1px solid black; 
+    border-radius: 10px;
+   
+  }
+
+
+
+  .but,.butb {
+    background-color: transparent;
+    border: 2px solid rgb(117, 193, 218);
+    border-radius: 20px;
+    color:#64c5e6;
+    padding: 5px 15px;
+    text-align: center;
+    display: inline-block;
+    font-size: 10px;
+    font-style:bold;
+    visibility: hidden;
+
+    }
+
+    .tot {
+      background-color: transparent;
+      border: 3px solid rgb(117, 193, 218);
+      border-radius: 30px;
+      color:#64c5e6;
+      padding: 10px 20px;
+      text-align: center;
+      display: inline-block;
+      font-size: 10px;
+      font-style:bold;
+      
+      }
+
+      
+    .op{
+      position:absolute;
+      top:460px;
+      right:20px;
+
+    }
+
+    .xv,.xvb{
+      background-color: transparent;
+      border: 3px solid rgb(116, 181, 202);
+      border-radius: 40px;
+      color:#64c5e6;
+      padding: 5px 15px;
+      text-align: center;
+      display: inline-block;
+      font-size: 15px;
+      font-style:bold;
+      visibility: hidden;
+    }
+  
+    .kk{
+      position:absolute;
+      top:500px;
+      left:5px;
+
+    }
+    .kkb{
+      position:absolute;
+      top:500px;
+      left:px;
+
+    }
+
+    .ki{
+      position:absolute;
+      top:500px;
+      left:5px;
+    }
+    .kib{
+      position:absolute;
+      top:500px;
+      left:5px;
+    }
+
+
+    .bullet {
+      position:absolute;
+      top:90px;
+      left:670px;
+      z-index: 10;
+      overflow: visible;
+    }
+    
+    .bullet1{
+      position:absolute;
+      top:810px;
+      left:1075px;
+      z-index: 10;
+      overflow: visible;
+    
+    }
+
+         
+    #undoButtonR{
+      background-color:transparent;
+      position:absolute;
+      color:#64c5e6;
+      top:630px;
+      border-radius: 10px;
+      padding: 7px;
+      height: 30px;
+      width: 60px;
+      border: 3px solid  #64c5e6;
+      left:30px;
+    }
+
+    #redoButtonR{
+      background-color:transparent;
+      position:absolute;
+      color:#64c5e6;
+      top: 630px;
+      border-radius: 10px;
+      padding: 7px;
+      height: 30px;
+      width: 60px;
+      border: 3px solid  #64c5e6;
+      left:100px;
+    }
+
+         
+    #undoButton{
+      background-color:transparent;
+      position:absolute;
+      color:#64c5e6;
+      top:530px;
+      border-radius: 10px;
+      padding: 7px;
+      height: 30px;
+      width: 60px;
+      border: 3px solid  #64c5e6;
+      left:30px;
+    }
+
+    #redoButton{
+      background-color:transparent;
+      position:absolute;
+      color:#64c5e6;
+      top: 530px;
+      border-radius: 10px;
+      padding: 7px;
+      height: 30px;
+      width: 60px;
+      border: 3px solid  #64c5e6;
+      left:100px;
+    }
+
+    .bullet svg {
+      width: 25px !important;
+      height: 25px !important;
+    }
+  
+    .bullet1 svg {
+      width: 25px !important;
+      height: 25px !important;
+    }
+    
+
+    }
+    
