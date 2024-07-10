@@ -40,15 +40,6 @@ function Liked() {
           });
           console.log(response.data);
           songs.push(response.data);
-
-          const newv = await axios.post('http://localhost:3000/likedplaylist',{
-            name:'liked',
-            id:window.localStorage.getItem('id'),
-            songs:songs
-          })
-          console.log(newv.data.message)
-        }
-
         console.log(songs);
         setLiked(songs);
       } catch (err) {
