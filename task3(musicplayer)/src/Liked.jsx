@@ -37,9 +37,11 @@ function Liked() {
             headers: {
               Authorization: `Bearer ${token}`,
             },
-          });
-          console.log(response.data);
-          songs.push(response.data);
+        });
+        console.log(response.data);
+        songs.push(response.data);
+      }
+         
         console.log(songs);
         setLiked(songs);
       } catch (err) {
