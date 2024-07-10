@@ -16,9 +16,9 @@ function Playlists(){
     const [playlist, setallplaylist] = useState([]);
     const [show1 , set1]=useState(false);
     const [show2 ,set2]=useState(true);
-    const [id1 ,setid]=useState();
     const [playing, setPlaying] = useState(null);
-    const [currentindex, setindex]=useState()
+    const [currentindex, setindex]=useState();
+    const [songsinplaylist,setsongsinplaylist]=useState([])
 
     const navigate = useNavigate();
     useEffect(() => {
@@ -39,7 +39,7 @@ function Playlists(){
           try{
             const res = axios.post('http://localhost:3000/newplaylist',{
             name:name,
-            id:window.localStorage.getItem('id')//res.data here instead of res u ca n put any anme will give u things inside es.json
+            user:window.localStorage.getItem('id')//res.data here instead of res u ca n put any anme will give u things inside es.json
           })
            console.log(res.data.message);
          //fetches the updated playlist
@@ -78,9 +78,6 @@ function toggle(){
 }
 
 
-function id(id){
-setid(id);
-}
 
 function SongEnd(){
   console.log(currentindex);
@@ -95,7 +92,7 @@ function SongEnd(){
    { show2 && (<>
     <div className='flex flex-wrap '>
         {playlist.map((play)=>(
-       <Cardplaylist key={play._id} mop={play} func={toggle} u={id}></Cardplaylist>
+       <Cardplaylist key={play._id} mop={play} func={toggle} u={setsongsinplaylist}></Cardplaylist>
        //mop(playlist  object)
         ))}
        </div>
@@ -115,8 +112,8 @@ function SongEnd(){
       {
         show1 && (
             <div className='flex mx-6 flex-wrap bg-slate-50 w-full rounded-md'>
-            {console.log(playlist[id1].songs,id1)}
-            {playlist[id1].songs.map((song,index) => (
+            {console.log(songsinplaylist)}
+            {songsinplaylist.map((song,index) => (
             <Card key={song.id} song={song} func={null} is={(false)} playSong={setPlaying} inc={setindex} index={index}/>))}
        </div>
         )
