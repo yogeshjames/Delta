@@ -158,12 +158,12 @@ app.post('/register',  (req,res)=>{
 var count=0;
 app.post('/newplaylist',  (req,res)=>{
 
-      const { name,id} = req.body;
+      const { name,user} = req.body;
      
   try {
       const newplaylist = {
           name:name,
-         user:id,// this is the user id (for future private playlist)
+         user:user,// this is the user id (for future private playlist)
          id:count
       }
       playlist.insertMany(newplaylist);
