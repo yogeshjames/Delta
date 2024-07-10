@@ -177,28 +177,6 @@ app.post('/newplaylist',  (req,res)=>{
     }
   })
 
-  app.post('/likedplaylist',  async (req,res)=>{
-
-    const { name,id,songs} = req.body;
-   
-try {
-    const newplaylist = {
-        name:name,
-       user:id,// this is the user id (for future private playlist)
-       id:100,
-       songs:songs
-    }
-  await  playlist.deleteMany({id:100})
-    await playlist.insertMany(newplaylist);
-     console.log(playlist.find());
-     res.status(200)
-     res.json({ message: 'liked playlist added'});
-     count++
-  } catch (error) {
-    console.error('Error saving playlist:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-})
 
 
  
