@@ -99,7 +99,7 @@ function Card({ song, func, is, playSong ,inc,index}) {
     <div className="flex m-7">
       <div
         onClick={() => {playSong(song)
-          if(index && inc){// check if i pass index that i sonly if its from playlist compoentn do this
+          if( inc){// check if i pass index that i sonly if its from playlist compoentn do this
             console.log(index)
           inc(++index)}
         }}
