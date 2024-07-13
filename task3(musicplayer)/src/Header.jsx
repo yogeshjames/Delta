@@ -51,6 +51,12 @@ function Header() {
         <span className='ml-10 p-4 font-extrabold'>welcome! </span>
         {window.localStorage.getItem("name")}
       </h1>
+       <button className='text-l relative left-1/2 px-24 top-5' onClick={()=>{
+        window.localStorage.removeItem('auth')
+        Navigate("/login");
+      }}>
+        Logout
+      </button>
     </header>
   );
 }
