@@ -42,7 +42,7 @@ const playlist = mongoose.models.playlists || mongoose.model('playlists',playlis
     try {
         const { username, password } = req.query; 
         const user = await loginform.findOne({ email: username, password: password });
-        const name = user.name;
+        const name = user.name;// u can even use if statement and check saved passs is current pass
         console.log(name)
         if (user) {
           res.status(200)
