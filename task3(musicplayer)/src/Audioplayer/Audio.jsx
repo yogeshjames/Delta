@@ -34,8 +34,8 @@ function Audio({ src, SongEnd }) {
       <div className='audio-player p-4 bg-pink-200 rounded-lg shadow-lg flex items-center font-serif'>
         <img src={src.album.images[0].url} alt={src.name} className='w-20 h-20 object-cover rounded-md mr-4' />
         <div className='song-details'>
-          {link ? <AudioPlayer src={link} next={SongEnd} /> : <p>No audio available</p>
-          //chnage it to src.preview_url if u want 
+          {link ? <AudioPlayer src={src.preview_url} next={SongEnd} /> : <p>No audio available</p>
+          //chnage it to link if u want all full songs 
           }
           <h2 className='text-xl font-bold'>{src.name}</h2>
           <h2 className='text-lg text-gray-700'>{src.artists[0].name}</h2>
