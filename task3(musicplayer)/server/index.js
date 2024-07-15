@@ -208,9 +208,10 @@ app.post('/addtoplaylist', async (req, res)=> {
 
   const { id , song}=req.body;
   try {
-       if(!(results[0].songs.some((songalr)=>(songalr.id==song.id)))){//prevsly song not exist
+    
     const results = await playlist.find({_id:id});
-    console.log(results)
+ if(!(results[0].songs.some((songalr)=>(songalr.id==song.id)))){//prevsly song not exist
+   // console.log(results)
     results[0].songs.push(song);
     results[0].save();
     console.log(results[0]);}
