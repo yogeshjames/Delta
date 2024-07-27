@@ -1578,7 +1578,7 @@ function game1(pos,poi){
 console.log(Math.abs(Math.abs(inpPosition.top) - Math.abs(bulletPosition.top)));
   console.log(Math.abs(Math.abs(inpPosition.left) - Math.abs(bulletPosition.left)));
  //console.log(Math.abs(inpPosition.top) - Math.abs(bulletPosition.top) < 5 && Math.abs(Math.abs(inpPosition.left) - Math.abs(bulletPosition.left)) < 34);
-  if (Math.abs(Math.abs(inpPosition.top) - Math.abs(bulletPosition.top)) < poi && Math.abs(Math.abs(inpPosition.left) - Math.abs(bulletPosition.left)) <= 38.5) {
+  if (Math.abs(Math.abs(inpPosition.top) - Math.abs(bulletPosition.top)) < poi && Math.abs(Math.abs(inpPosition.left) - Math.abs(bulletPosition.left)) <= 42) {// before it was 38.5
       console.log('Collision detected! Stopping shooting.');
       if(pos==2||pos==6){
         if(pos==2){
