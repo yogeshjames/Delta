@@ -11,7 +11,7 @@ document.querySelector(`.box-${i}`).style.backgroundColor = "#64c5e6";
 
 }
 }
-document.querySelector('.box-3').style.backgroundImage = "url('assests/TITAN.png')";
+document.querySelector('.box-3').style.backgroundImage = "url('assests/TITAN.png')";//// CAPITAL TITAN IS CANON IN 1ST  AND CANON IS TITAN
 document.querySelector('.box-12').style.backgroundImage = "url('assests/CANON1.svg')";
 document.querySelector('.box-12').style.backgroundPosition = '10% 40%'; 
  document.querySelector('.box-10').style.backgroundImage =  "url('assests/shield.png')";
@@ -22,6 +22,7 @@ document.querySelector('.box-49').style.backgroundImage = "url('assests/castle2.
 document.querySelector('.box-52').style.backgroundImage =  "url('assests/shield2.svg')";
 document.querySelector('.box-54').style.backgroundImage = "url('assests/rok2.svg')";
 document.querySelector('.box-50').style.backgroundImage = "url('assests/tri2.svg')";
+
 function buttonreset(){
   document.querySelectorAll(".xv")[0].style.visibility="hidden";
   document.querySelectorAll(".xv")[1].style.visibility="hidden";
@@ -33,34 +34,34 @@ function buttonreset(){
  document.querySelectorAll(".butb")[1].style.visibility="hidden"; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------
-document.querySelector('.bullet').style.top = '90px';
+document.querySelector('.bullet').style.top = '90px';/// INITIALLY SETTING THE BULLET PPOS
 document.querySelector('.bullet').style.left = '670px';
 var bullet = document.querySelector('.bullet');
 function centerBulletInDiv(toti, m) {
   let targetDiv = document.querySelector(`.box-${toti}`);
   let bulletRect = bullet.getBoundingClientRect();
-  let centeredLeft = targetDiv.offsetLeft + (targetDiv.offsetWidth / 2) - (bulletRect.width / 2);
+  let centeredLeft = targetDiv.offsetLeft + (targetDiv.offsetWidth / 2) - (bulletRect.width / 2);/// OFFSET IS Relative to the nearest positioned ancestor (an ancestor with a position property other than static).
   let centeredTop = targetDiv.offsetTop + (targetDiv.offsetHeight / 2) - (bulletRect.height / 2);
-  bullet.style.left = `${centeredLeft}px`;
+  bullet.style.left = `${centeredLeft}px`;//GET6BIUNDING IS BASED ON VIEPORT
   bullet.style.top = `${centeredTop + m}px`; // Adjusted to add m to the centeredTop value
 }
 
 
 setTimeout(() => {
-  centerBulletInDiv(3,0);
+  centerBulletInDiv(3,0);//inistially at 3rd box ryt 
 }, 10);
 /// FUNCTION TO CENTRE THE BULLET INSIDE BOX AFTER ALL COLLISON
 
 
 
 var posx = document.querySelector('.bullet').style.top;
-var numberX = parseInt(posx, 10);
+var numberX = parseInt(posx, 10);//if it encounters string it stops not decimal value too only  integer
 var currentAnimationFrame;
 var flags = {
-  s: 1,
-  flag: 1,//TO DETECT RICHOCHET AND SEMI RICHOCHETE COLLISON
+  s: 1,// check collison with other
+  flag: 1,//TO DETECT which RICHOCHET  like 1 or 2 AND SEMI RICHOCHETE COLLISON
   shield: 1,
-  collision: 0,
+  collision: 0,///just says rico or semi rico  also used for 2nd 3rd collsions 
   direc: ""
 };
 //FLAGS
@@ -70,17 +71,17 @@ function Shoot() {
   document.querySelector('.bullet').style.top = numberX + 'px';
   console.log(1);
   if (flags.shield == 0) {
-    reset();
+    reset();/// resets the bullet;
     return;//IF COLLIDES WITH SHIELD OR TITTAN
   }
   if (flags.s === 1) {
-    callGameFunctions([3, 2, 5, 6],5);
+    callGameFunctions([3, 2, 5, 6],5);// all these are the array positions where the curretn position of the elemnts are stored
     collison(0,1,5);//CALLING ALL FUNCTIONS AT START ITSELF 
-    collison(7,8,5);
+    collison(7,8,5);/// 01,7,8 are array position of wherre the position of all rico ,  semi rico is stored
     
   }
 
-  const a = (document.querySelector(`.box-${inp[0]}`).style.backgroundImage.includes("rok1.svg") && flags.flag == 0);
+  const a = (document.querySelector(`.box-${inp[0]}`).style.backgroundImage.includes("rok1.svg") && flags.flag == 0);/// if cuurentdiv has the image and collison is detected 
   const c = (document.querySelector(`.box-${inp[0]}`).style.backgroundImage.includes("rok.svg") && flags.flag == 0);
   const b = (document.querySelector(`.box-${inp[1]}`).style.backgroundImage.includes("tri.svg")&& flags.flag == 2);
   
@@ -91,23 +92,23 @@ function Shoot() {
   console.log(c);
 var toplimit=830;
 if(window.innerWidth<480)  toplimit=400;//MAKING CONDITIONS FRO MOBILE RESPONSIVENESS TOO
-  if (numberX > toplimit) {
+  if (numberX > toplimit) {// goes outside the grid
     document.querySelector('.bullet').style.visibility = "hidden";
     setTimeout(function() {
       document.querySelector('.bullet').style.visibility = "visible";
-      reset();
+      reset();// take care of where the canono is 
       numberX = 90;// IF IT EXCEEDS THE RANGE BULLET IS SET BACK AGAIN 
     }, 500);
   } else if (flags.s === 1) {
     currentAnimationFrame = requestAnimationFrame(Shoot);
-    Reached=1;
+    Reached=1;/// means bullet is moving 
   }
   if (flags.s == 0) {// IF COLLISION GETS DETECTED THE FLAG S BECOMES ZERO
     if (c || e) {
       moveLeftbullet()//CHECKING THE CONDITIONS OF WHATEVR THING GOT COLLIODED
       flags.direc = "left";
-      flags.collision = 0;
-    } else if (a || d) {
+      flags.collision = 0;// after the bullet moves left reset this chnage this only if again collison is deteceted(see inside the function left)
+    } else if (a || d) {//  for semi rico we do this 
       moveRightbullet()
       flags.direc = "right";
       flags.collision = 0;
@@ -123,7 +124,7 @@ if(window.innerWidth<480)  toplimit=400;//MAKING CONDITIONS FRO MOBILE RESPONSIV
       console.log(1);
     }
     else if (b || f) {
-      reset();
+      reset();/// if on rough sides
     }
   }
 }
@@ -133,11 +134,11 @@ function callGameFunctions(gameNumbers,oi) {
   });
 }
 //VARIABLE TO ALLOW MOVEMENTS ONLY AFTER THE BALL FINISHES
-var Reached=0;
+var Reached=0;// bullet  not moving 
 var Reached1=0;
 function reset() {
   cancelAnimationFrame(currentAnimationFrame);
-  findDivWithImage();
+  findDivWithImage();/// finds current pos of alll 
   centerBulletInDiv(inp[4],0);
 //  let di = document.querySelector(`.box-${inp[4]}`);
   flags.s = 1;
@@ -145,8 +146,8 @@ function reset() {
   flags.shield= 1;
   flags.collision= 0;
   flags.direc="";//RESETTING EVERYTHING
-  numberX = 90; 
-  Reached=0;// Reset top position
+  numberX = 90; // Reset top position
+  Reached=0;
   return;
 }
 var countl=0;
@@ -156,16 +157,16 @@ function moveLeftbullet() {
   leftbullet -= 5;
   countl++; 
   bullet.style.left = leftbullet + 'px';
-  flags.flag = 1;
+  flags.flag = 1;//resetting
   flags.collision= 0;
   //callGameFunctions([3, 2, 5, 6],38);
-  if(countl>16){
+  if(countl>16){// allow it to move out of the div before checking other collison 
     callGameFunctions([3, 2, 5, 6],38);
    collison(0,1,50);
   collison(7,8,50);
     countl=0;
     console.log(flags.collision)
-    if(flags.collision==1 || flags.collision==2){flags.direc="left";gamecollision(); return;} }
+    if(flags.collision==1 || flags.collision==2){flags.direc="left";gamecollision(); return;} }/// if it collides woth rico or semi after moving left or rigth 
     var leftlimit=330;
     if(window.innerWidth<480) leftlimit=10;
   if (leftbullet < leftlimit || flags.shield == 0) {
@@ -174,7 +175,7 @@ function moveLeftbullet() {
     console.log(1);
     return;
   } else {
-    currentAnimationFrame = requestAnimationFrame(moveLeftbullet);
+    currentAnimationFrame = requestAnimationFrame(moveLeftbullet);//keep moving left 
     
   }
 }
@@ -224,7 +225,7 @@ function moveUpbullet() {
   collison(7,8,56);
   countt=0;
   console.log(flags.collision)
-  if(flags.collision==1 || flags.collision==2){ flags.direc="up"; gamecollision(); return;}} 
+  if(flags.collision==1 || flags.collision==2){ flags.direc="up"; gamecollision(); return;}} // retunring coz function should stop 
 
   if (topbullet < 90 || flags.shield == 0) {
     reset();
@@ -267,7 +268,7 @@ function moveDownbullet() {
 }
 
 //FOR TITAN AND SHIELD
-function game(pos,poi){
+function game(pos,poi){//// using this poi becoz collisons fro diff get detetcted at diff values idk why
 //console.log(poi)
   let div1 = document.querySelector('.bullet');
   let bulletPosition = div1.getBoundingClientRect();
@@ -290,7 +291,7 @@ function game(pos,poi){
       }
       if(pos==3||pos==5){
          reset();
-         flags.shield=0;
+         flags.shield=0;//collided with the shield
           console.log("shield")
           return;
   }
@@ -312,7 +313,7 @@ function collison(repa,repb,limitx) {
     if (Math.abs(Math.abs(inpPosition.top) - Math.abs(bulletPosition.top)) < limitx && Math.abs(Math.abs(inpPosition.left) - Math.abs(bulletPosition.left)) <= 37) {
         console.log('Collision detected! Stop.');
         flags.s = 0;
-        if(repa==0){
+        if(repa==0){// rico1 or ric02  based on flag 
         flags.flag = 0;}
         else{
           flags.flag = 3;
@@ -326,7 +327,7 @@ function collison(repa,repb,limitx) {
     if (Math.abs(Math.abs(triPosition.top) - Math.abs(bulletPosition.top)) < limitx && Math.abs(Math.abs(triPosition.left) - Math.abs(bulletPosition.left)) < 38) {
         console.log('Collision detected! Stopping shooting.');
         flags.s = 0;
-        if(repb==1){
+        if(repb==1){//semi rico 1 or semi rico 2 
         flags.flag = 2;}
         else{
           flags.flag = 5;
@@ -502,7 +503,6 @@ function moveR(Boxc , rig) {
  document.querySelector(`.box-${Boxc - 1}`).style.backgroundColor = "#64c5e6";
 }
  document.querySelector(`.box-${Boxc + 1}`).style.backgroundColor = "#64c5e6";
- // Add an event listener to the left box
  document.querySelector(`.box-${Boxc}`).removeEventListener('click', clickHandlerc);
 
      // Remove the background image from the current box and set it to the left box
@@ -510,9 +510,10 @@ function moveR(Boxc , rig) {
      document.querySelector(`.box-${Boxc + (rig)}`).style.backgroundImage = "url('assests/TITAN.png')";
      Boxc= Boxc + (rig);
     // pos = Boxc;
-     console.log(4554)
+     console.log(Boxc)
      document.querySelector(`.box-${Boxc}`).addEventListener('click', clickHandlerc);
      reset();
+     console.log(4)
       Shoot();
       buttonreset();
       startTeamBTimer();
@@ -533,27 +534,28 @@ var backgroundImage1 = document.querySelector(`.box-${Boxc+1}`).style.background
 if(Boxc-1>=0){
 var backgroundImage2 = document.querySelector(`.box-${Boxc-1}`).style.backgroundImage;}
 else{
-  var backgroundImage2="notexist";
+  var backgroundImage2="notexist";// it need somevalue or else it shows errror soo i use this 
 }
-var left = backgroundImage2.includes("none");
+var left = backgroundImage2.includes("none");// better than using === cause its better for urls 
 var right = backgroundImage1.includes("none");
 blue();
 if (Boxc - 1 >= 0 && left ) {
 console.log(8778);
 document.querySelector(`.box-${Boxc - 1}`).style.backgroundColor = "green";
 }
-if (Boxc + 1 <= 40 && right) {
+if (Boxc + 1 <= 7 && right) {
 document.querySelector(`.box-${Boxc + 1}`).style.backgroundColor = "green";}
 
 
 function Remove(){
-if(Boxc - 1>0 ){
+if(Boxc - 1>0 ){//// im usi g this confditons becoz if i dont use it gives error at edge cases saying box-1 is not presetn 
   console.log(Boxc - 1)
 document.querySelector(`.box-${Boxc - 1}`).removeEventListener('click', leftClickListener);
 document.querySelector(`.box-${Boxc + 1}`).removeEventListener('click', rightClickListener);
-
 }else{
 document.querySelector(`.box-${Boxc + 1}`).removeEventListener('click', rightClickListener);
+document.querySelector(`.box-0`).removeEventListener('click', leftClickListener);// for endge case im doing this 
+document.querySelector(`.box-0`).removeEventListener('click', rightClickListener);
 }
 }
 
@@ -591,10 +593,14 @@ document.querySelector(`.box-${Boxc + 1}`).addEventListener('click', rightClickL
 
 }
 function clickHandlerc(event) {
+
+  console.log(team,Paused,Reached1)
   if (team !== "a" || Paused || Reached1) return;
-console.log(event.target.className);
-var Boxc = parseInt(event.target.className.match(/\d+/)[0], 10);
+console.log(event.target.className);///\d+/ will match the integers and it return array of matched integers 
+var Boxc = parseInt(event.target.className.match(/\d+/)[0], 10);//we know parse int wills top if it sees string soo gettin on y int from box-6
 highlightAdjacentBoxes(Boxc);
+
+///output will be like this parseInt("5", 10);
 //ALLOWS MOVEMTN ONLY IF NOT PAUSED THE TEAMS CHANCE AND BALL REACHED
 
 }
@@ -614,10 +620,10 @@ function move(BoxN,imgUrl,pos) {
       BoxN = BoxN +(pos);
       updatea(BoxN,imgUrl);
      if (imgUrl === "url('assests/tri.svg')" ) {
-    o=BoxN;
+    o=BoxN;/// has pos of tri 
     lol=BoxN;
-    updateRotation(lol,0);
-    document.querySelector(`.box-${BoxN-(pos)}`).style.transform = 'rotate(0deg)';
+    updateRotation(lol,0);///this  handes the rotation of semi rico sending the position
+    document.querySelector(`.box-${BoxN-(pos)}`).style.transform = 'rotate(0deg)';//// resetting the old div 
 }
        flags.shield=1;
        reset();
@@ -631,7 +637,7 @@ function move(BoxN,imgUrl,pos) {
 
 function updatea(BoxN,imgUrl){
   if (imgUrl === "url('assests/CANON1.svg')") {
-    x=BoxN;
+    x=BoxN;// all this is for pause 
   } else if (imgUrl === "url('assests/shield.png')" ) {
     y=BoxN;
 }
@@ -697,14 +703,14 @@ function leftClickListener(event) {
 if(document.querySelector(`.box-${BoxN - 1}`).style.backgroundColor === "green"){
   if (BoxN >=1 && left ) {
     move(BoxN , imgUrl,-1);}}//MAKING AVAILABLE BOXES ALONE
-Remove(BoxN , imgUrl);
+Remove(BoxN , imgUrl);/// however no use of this params 
 }
 
 function rightClickListener(event) {
 if(document.querySelector(`.box-${BoxN + 1}`).style.backgroundColor === "green"){
   if (BoxN < 63 && right) {
 move(BoxN , imgUrl , 1);}}
-Remove(BoxN , imgUrl);
+Remove(BoxN , imgUrl);/// even tho not moved remove listner 
                                          
 }
 
@@ -750,7 +756,7 @@ highlightAdjacentBoxes(BoxN, imgUrl);}
 }
 
 
-var pos = [10,12,13,15];
+var pos = [10,12,13,15];/// howvwer i alr hv inp for this but s till hv this for initial 
 var x=pos[1];
 var y=pos[0];
 var z=pos[2];
@@ -780,8 +786,8 @@ leu(13);
 var rok=0;
 function but1(direction) {
   findDivWithImage();
-let  div=inp[0];
-if (direction === 'right' && document.querySelector(`.box-${div}`).style.backgroundImage.includes("rok.svg") && team=="a" && !Reached1) {
+let  div=inp[0];/// pos of rico 
+if (direction === 'right' && document.querySelector(`.box-${div}`).style.backgroundImage.includes("rok.svg") && team=="a" && !Reached1) {// check prev ot was left 
 document.querySelector(`.box-${div}`).style.backgroundImage = "url('assests/rok1.svg')";
 rok=0;
 blue();
@@ -827,8 +833,8 @@ function click(){
     if (i === tri) {
         continue; //skoip tr
     }
-    document.querySelector(`.box-${i}`).removeEventListener('click', visible);
-}}
+    document.querySelector(`.box-${i}`).removeEventListener('click', visible);/// except for box of tri remove this event listener for other boxes 
+}}/// doing this even after moving the hhand,ler might stil be therr
 
 click();
 
@@ -840,7 +846,7 @@ function rotateLeft() {
   if(team=="a" && !Paused && !Reached1){
   rotation -= 90; 
   if(rotation==360 || rotation==-360){
-    rotation=0;}
+    rotation=0;}/// resetting 
   }
   updateRotation(tri,1);
   console.log(rotation)
@@ -858,13 +864,13 @@ function rotateRight() {
 
 function updateRotation(lol,pi) {
   if(team=="a" && !Paused && !Reached1){
-  document.querySelector(`.box-${lol}`).style.transform = `rotate(${rotation}deg)`;
+  document.querySelector(`.box-${lol}`).style.transform = `rotate(${rotation}deg)`;// change the current div 
   tri=lol;
   blue();
   click();
   reset();
   Shoot();
-  if(pi==1){
+  if(pi==1){/// ifthis is triggered due to movong no need to do this coz alr be done move function
   startTeamBTimer();//TIMER OF THE OTHER TEAM STARTS
   team="b";
   teampause=team;}
@@ -1236,7 +1242,7 @@ function leub(lb){
   rokb=0;
   blue();
   reset();
-     Shoot1();
+  Shoot1();
   startTeamATimer();
   team="a";
   teampause=team;
@@ -1247,7 +1253,7 @@ function leub(lb){
   document.querySelector(`.box-${divb}`).style.backgroundImage = "url('assests/rok3.svg')";
   rokb=1;
   reset();
-     Shoot1();
+  Shoot1();
   startTeamATimer();
   team="a";
   teampause=team;
@@ -1578,7 +1584,7 @@ function game1(pos,poi){
 console.log(Math.abs(Math.abs(inpPosition.top) - Math.abs(bulletPosition.top)));
   console.log(Math.abs(Math.abs(inpPosition.left) - Math.abs(bulletPosition.left)));
  //console.log(Math.abs(inpPosition.top) - Math.abs(bulletPosition.top) < 5 && Math.abs(Math.abs(inpPosition.left) - Math.abs(bulletPosition.left)) < 34);
-  if (Math.abs(Math.abs(inpPosition.top) - Math.abs(bulletPosition.top)) < poi && Math.abs(Math.abs(inpPosition.left) - Math.abs(bulletPosition.left)) <= 42) {// before it was 38.5
+  if (Math.abs(Math.abs(inpPosition.top) - Math.abs(bulletPosition.top)) < poi && Math.abs(Math.abs(inpPosition.left) - Math.abs(bulletPosition.left)) <= 42) {// was 38.5
       console.log('Collision detected! Stopping shooting.');
       if(pos==2||pos==6){
         if(pos==2){
