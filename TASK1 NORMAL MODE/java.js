@@ -1236,6 +1236,7 @@ function leub(lb){
   rokb=0;
   blue();
   reset();
+     Shoot1();
   startTeamATimer();
   team="a";
   teampause=team;
@@ -1246,6 +1247,7 @@ function leub(lb){
   document.querySelector(`.box-${divb}`).style.backgroundImage = "url('assests/rok3.svg')";
   rokb=1;
   reset();
+     Shoot1();
   startTeamATimer();
   team="a";
   teampause=team;
