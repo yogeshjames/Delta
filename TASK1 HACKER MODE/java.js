@@ -5,6 +5,9 @@ for (let i = 0; i <= 63; i++) {
   box.style.backgroundImage = "none";
   gridContainer.appendChild(box);
 }  
+
+
+//ERROR SWAPPING 3 TIMES OR 4 TIMES FUNCTION GETTING CALLED AGAIN AGAIN
 function blue(){
 for (let i = 0; i <= 63; i++) {
 document.querySelector(`.box-${i}`).style.backgroundColor = "#64c5e6";
@@ -83,7 +86,7 @@ function Shoot() {
 
   const a = (document.querySelector(`.box-${inp[0]}`).style.backgroundImage.includes("rok1.svg") && flags.flag == 0);
   const c = (document.querySelector(`.box-${inp[0]}`).style.backgroundImage.includes("rok.svg") && flags.flag == 0);
-  if(inp[1]!== undefined){
+  if(inp[1]!== undefined){//// do only if it exists 
   var b = (document.querySelector(`.box-${inp[1]}`).style.backgroundImage.includes("tri.svg")&& flags.flag == 2);}
   if(inp[8]!== undefined){
     var f = (document.querySelector(`.box-${inp[8]}`).style.backgroundImage.includes("tri2.svg")&& flags.flag == 5);}
@@ -205,7 +208,7 @@ function moveLeftbullet() {
   flags.collision= 0;
   //callGameFunctions([3,5],38);
   if(countl>17){
-    callGameFunctions([ 2,6],38);
+    callGameFunctions([ 2,6],38);/// dont check gor collison if from rughht 
    collison(0,1,50);
   collison(7,8,50);
     countl=0;
@@ -629,10 +632,11 @@ document.querySelector(`.box-${currentBoxc}`).addEventListener('click', clickHan
 
 function moveR(Boxc, rig) {
   playMoveSound();
-  pp=1;
+  pp=1;/// decides which function should work like canon undo or pieces undo coz i hv same name for both
   tt=0;
   ff=0;
   kk=0;
+  countx=0;///only i time undo can be done 
     if (Boxc !== 0) {
         document.querySelector(`.box-${Boxc - 1}`).style.backgroundColor = "#64c5e6";
     }
@@ -640,8 +644,8 @@ function moveR(Boxc, rig) {
     document.querySelector(`.box-${Boxc}`).removeEventListener('click', clickHandlerc);
 
     // Push the current state to the moveStack for undo
-    moveStack.push({ Boxc: Boxc, rig: rig });
-    // Clear the redoStack on a new move
+    moveStack.push({ Boxc: Boxc, rig: rig });// rig is + or -1 
+    // Clear the redoStack
     redoStack = [];
 
     document.querySelector(`.box-${Boxc}`).style.backgroundImage = "none";
@@ -651,7 +655,7 @@ function moveR(Boxc, rig) {
     document.querySelector(`.box-${currentBoxc}`).addEventListener('click', clickHandlerc);
     reset();
     Shoot();
-    buttonreset();
+    buttonreset();// visibility
     startTeamBTimer();
     team = "b";
     teampause = team;
@@ -729,17 +733,18 @@ function clickHandlerc(event) {
 }
 var pp=0;
 var tt=0;
+var countx=0;
 function undo() {
   console.log(pp);
-if(pp){
+if(pp &&countx==0){
   console.log(pp);
     if (moveStack.length === 0) return;
     const lastMove = moveStack.pop();
-
+  countx=1;
     // Store the current position before undo for redo purposes
     redoStack.push({ Boxc: lastMove.Boxc, rig: lastMove.rig });
     console.log(redoStack);
-    document.querySelector(`.box-${currentBoxc}`).style.backgroundImage = "none";
+    document.querySelector(`.box-${currentBoxc}`).style.backgroundImage = "none";/// removing canon from 1s t box and keeping it in prev box 
     currentBoxc = lastMove.Boxc;
     document.querySelector(`.box-${currentBoxc}`).style.backgroundImage = "url('assests/TITAN.png')";
     document.querySelector(`.box-${currentBoxc}`).addEventListener('click', clickHandlerc);
@@ -756,14 +761,14 @@ function redo() {
     moveStack.push({ Boxc: currentBoxc, rig: lastUndo.rig });
 
     document.querySelector(`.box-${currentBoxc}`).style.backgroundImage = "none";
-    currentBoxc = lastUndo.Boxc + lastUndo.rig;
+    currentBoxc = lastUndo.Boxc + lastUndo.rig;//// previous box of undo 
     document.querySelector(`.box-${currentBoxc}`).style.backgroundImage = "url('assests/TITAN.png')";
     document.querySelector(`.box-${currentBoxc}`).addEventListener('click', clickHandlerc);
     reset();
     buttonreset();
 
   }}
-document.getElementById('undoButton').addEventListener('click', undo);
+document.getElementById('undoButton').addEventListener('click', undo);//im having pnly 2 buttons for each side soo i use same name but use varibales to ckeck which to execute 
 document.getElementById('redoButton').addEventListener('click', redo);
 
 
@@ -777,7 +782,7 @@ let teampause=""
   
     function move(BoxN, imgUrl, pos) {
       tt=1;
-      pp=0;
+      pp=0;//// if this moves and undo function is called the jundo for piececs only will be triggered 
       ff=0;
       kk=0;  
       countp=0;
@@ -789,7 +794,7 @@ let teampause=""
       document.querySelector(`.box-${BoxN}`).style.backgroundImage = "none";
       document.querySelector(`.box-${BoxN + pos}`).style.backgroundImage = imgUrl;
      
-      moveStack.push({ BoxN: BoxN, imgUrl: imgUrl, pos: pos });
+      moveStack.push({ BoxN: BoxN, imgUrl: imgUrl, pos: pos });//// pos is likev rig also image also boxn
       redoStack = [];
       BoxN = BoxN + pos;
       updatea(BoxN, imgUrl);
@@ -832,14 +837,14 @@ let teampause=""
 
     function swap(pos2, img, BoxN) {
       blue();
-      buttonHandlers = [];
-     document.querySelector(`.box-${BoxN}`).removeEventListener('click', clickHandler);
+      buttonH = [];
+     document.querySelector(`.box-${BoxN}`).removeEventListener('click', clickHandler);/// REMOVING THE PRESENT LISTENRE(FOR MOVING)
     document.querySelector(`.box-${BoxN + pos2}`).removeEventListener('click', clickHandler);
-    const newPosImage = document.querySelector(`.box-${BoxN + pos2}`).style.backgroundImage;
-      switch (newPosImage) {
+    const newPos = document.querySelector(`.box-${BoxN + pos2}`).style.backgroundImage;//// IMAGE IN FUTURE BOX 
+      switch (newPos) {
         case 'url("assests/shield.png")':
           y = BoxN;
-          setupObjectMovement(y, "url('assests/shield.png')")
+          setupObjectMovement(y, "url('assests/shield.png')")/// ADDING THE EVENT LISTENER (HAPPENS INSIDEV THIS FUNC )
           break;
         case 'url("assests/tri.svg")':
           o = BoxN;
@@ -850,16 +855,16 @@ let teampause=""
           break;
       }
       console.log(BoxN + pos2);
-      document.querySelector(`.box-${BoxN}`).style.backgroundImage = newPosImage;
+      document.querySelector(`.box-${BoxN}`).style.backgroundImage = newPos;
       document.querySelector(`.box-${BoxN + pos2}`).style.backgroundImage = img
      // if (rok == 1) document.querySelector(`.box-${BoxN + pos2}`).style.backgroundImage = "url('assests/rok.svg')";
       z = BoxN + pos2;
       console.log(z);
-      setupObjectMovement(z, "url('assests/rok1.svg')");
+      if(rok==0)setupObjectMovement(z, "url('assests/rok1.svg')");
       if (rok == 1) setupObjectMovementb(z, "url('assests/rok.svg')");
      document.querySelector(`.box-${BoxN + pos2}`).addEventListener('click', clickHandler);
      
-     document.querySelector(`.box-${BoxN}`).addEventListener('click', clickHandler);
+     document.querySelector(`.box-${BoxN}`).addEventListener('click', clickHandler);// listener to both the boxes
      reset();
      Shoot();
      buttonreset();
@@ -874,11 +879,11 @@ let teampause=""
       return;
     }
     function swapDirection(direction,BoxN) {
-      buttonHandlers=[];
-      console.log(buttonHandlers);
+      buttonH=[];/// REMOVING ALL OTHER BUTTON EVENTS 
+      console.log(buttonH);
       switch (direction) {
         case 'left':
-          img=document.querySelector(`.box-${BoxN}`).style.backgroundImage;
+          img=document.querySelector(`.box-${BoxN}`).style.backgroundImage;/// FROM WHICH BOX SWAP IS TRIGGERED
           swap(-1,img,BoxN);
           break;
         case 'right':
@@ -904,10 +909,10 @@ let teampause=""
     var rightButton = document.getElementById('o');
     var downButton = document.getElementById('n');
 
-    var buttonHandlers = [];
+    var buttonH = [];
 
     function highlightAdjacentBoxes(BoxN, imgUrl) {
-     // var buttonHandlers = [];
+     // var buttonH = [];
       imgUrl = document.querySelector(`.box-${BoxN}`).style.backgroundImage;
 
     //  if (inp[1] === undefined) {
@@ -925,60 +930,63 @@ let teampause=""
     
       blue();
       console.log(BoxN);
-
-      function upButtonHandler() {
+////all this is fro swap 
+      function upButtonH() {
         swapDirection('up', BoxN);
        
     }
 
-    function leftButtonHandler() {
+    function leftButtonH() {
+      console.log(0);
         swapDirection('left', BoxN);
        
     }
 
-    function rightButtonHandler() {
+    function rightButtonH() {
         swapDirection('right', BoxN);
        
     }
 
-    function downButtonHandler() {
+    function downButtonH() {
         swapDirection('down', BoxN);
        
     }
 
-    buttonHandlers = [upButtonHandler, leftButtonHandler, rightButtonHandler, downButtonHandler];
+    buttonH = [upButtonH, leftButtonH, rightButtonH, downButtonH];
 
-    if (!top && !(backgroundImage4.includes("CANON1.svg")) &&(imgUrl === 'url("assests/rok1.svg")' || imgUrl === 'url("assests/rok.svg")')) {
+/// only if some piece  present also not titan and its a rico then swap button should be availabke 
+
+    if (!top && !(backgroundImage4.includes("castle2.svg")) && !(backgroundImage4.includes("CANON1.svg")) &&(imgUrl === 'url("assests/rok1.svg")' || imgUrl === 'url("assests/rok.svg")')) {
         upButton.disabled = false;
-        upButton.addEventListener('click', upButtonHandler);
+        upButton.addEventListener('click', upButtonH);
     } else {
         upButton.disabled = true;
-        upButton.removeEventListener('click', upButtonHandler);
+        upButton.removeEventListener('click', upButtonH);
     }
 
-    if (!left && !(backgroundImage2.includes("CANON1.svg")) &&(imgUrl === 'url("assests/rok1.svg")' || imgUrl === 'url("assests/rok.svg")')) {
+    if (!left &&  !(backgroundImage2.includes("castle2.svg")) &&!(backgroundImage2.includes("CANON1.svg")) &&(imgUrl === 'url("assests/rok1.svg")' || imgUrl === 'url("assests/rok.svg")')) {
         leftButton.disabled = false;
-        leftButton.addEventListener('click', leftButtonHandler);
+        leftButton.addEventListener('click', leftButtonH);
     } else {
         leftButton.disabled = true;
-        leftButton.removeEventListener('click', leftButtonHandler);
+        leftButton.removeEventListener('click', leftButtonH);
     }
 
-    if (!right && !(backgroundImage1.includes("CANON1.svg")) &&(imgUrl === 'url("assests/rok1.svg")' || imgUrl === 'url("assests/rok.svg")')) {
+    if (!right &&  !(backgroundImage1.includes("castle2.svg")) &&  !(backgroundImage1.includes("CANON1.svg")) &&(imgUrl === 'url("assests/rok1.svg")' || imgUrl === 'url("assests/rok.svg")')) {
         rightButton.disabled = false;
-        rightButton.addEventListener('click', rightButtonHandler);
+        rightButton.addEventListener('click', rightButtonH);
     } else {
         rightButton.disabled = true;
-        rightButton.removeEventListener('click', rightButtonHandler);}
+        rightButton.removeEventListener('click', rightButtonH);}
      
-        if (!down && !(backgroundImage3.includes("CANON1.svg")) && (imgUrl === 'url("assests/rok1.svg")' || imgUrl === 'url("assests/rok.svg")')) {
-          downButton.addEventListener('click',downButtonHandler );
+        if (!down && !(backgroundImage3.includes("castle2.svg")) &&!(backgroundImage3.includes("CANON1.svg")) && (imgUrl === 'url("assests/rok1.svg")' || imgUrl === 'url("assests/rok.svg")')) {
+          downButton.addEventListener('click',downButtonH );
           downButton.disabled = false;
       } else {
         downButton.disabled = true;
-        downButton.removeEventListener('click', downButtonHandler);}
+        downButton.removeEventListener('click', downButtonH);}
       
-  
+  /// above all is for swap 
       if (BoxN - 1 >= 0 && left) {
         document.querySelector(`.box-${BoxN - 1}`).style.backgroundColor = "green";
       }
@@ -1540,9 +1548,10 @@ else if (imgUrlb === 'url("assests/rok2.svg")' || imgUrlb === 'url("assests/rok3
 }
 
 function swap2(pos2, img, BoxNb1) {
+  console.log(78)
   blue();
   buttonHandlersb = [];
-  
+  console.log(78)
   document.querySelector(`.box-${BoxNb1}`).removeEventListener('click', clickHandlerb);
   document.querySelector(`.box-${BoxNb1 + pos2}`).removeEventListener('click', clickHandlerb);
 
@@ -1572,7 +1581,7 @@ console.log(newPosImage);
   console.log("New Box:", zb);
 
   // Add event listeners to new positions
-  setupObjectMovementb(zb, "url('assests/rok2.svg')");
+  if(rokb==0)setupObjectMovementb(zb, "url('assests/rok2.svg')");
   if (rokb == 1) setupObjectMovementb(zb, "url('assests/rok3.svg')");
   document.querySelector(`.box-${BoxNb1 + pos2}`).addEventListener('click', clickHandlerb);
   document.querySelector(`.box-${BoxNb1}`).addEventListener('click', clickHandlerb);
@@ -1599,6 +1608,7 @@ function swapDirection1(direction, BoxN) {
   switch (direction) {
     case 'left':
       img = document.querySelector(`.box-${BoxN }`).style.backgroundImage;
+      console.log(90)
       swap2(-1, img, BoxN);
       break;
     case 'right':
@@ -1659,59 +1669,60 @@ if(BoxNb+8<=63){
 
 
 
-    function upButtonHandler() {
+    function upButtonH1() {
       swapDirection1('up', BoxNb);
      
   }
 
-  function leftButtonHandler() {
+  function leftButtonH1() {
+    console.log(0);
       swapDirection1('left', BoxNb);
      
   }
 
-  function rightButtonHandler() {
+  function rightButtonH1() {
       swapDirection1('right', BoxNb);
      
   }
 
-  function downButtonHandler() {
+  function downButtonH1() {
       swapDirection1('down', BoxNb);
      
   }
-  buttonHandlersb = [upButtonHandler, leftButtonHandler, rightButtonHandler, downButtonHandler];
+  buttonHandlersb = [upButtonH1, leftButtonH1, rightButtonH1, downButtonH1];
 
-  if (!topb  && !(backgroundImage4.includes("castle2.svg")) && (imgUrlb === 'url("assests/rok2.svg")' || imgUrlb === 'url("assests/rok3.svg")')) {
+  if (!topb  && !(backgroundImage4.includes("castle2.svg")) && !(backgroundImage4.includes("CANON1.svg"))  && (imgUrlb === 'url("assests/rok2.svg")' || imgUrlb === 'url("assests/rok3.svg")')) {
       upButtonb.disabled = false;
-      upButtonb.addEventListener('click', upButtonHandler);
+      upButtonb.addEventListener('click', upButtonH1);
   } else {
       upButtonb.disabled = true;
-      upButtonb.removeEventListener('click', upButtonHandler);
+      upButtonb.removeEventListener('click', upButtonH1);
   }
 
-  if (!leftb && !(backgroundImage2.includes("castle2.svg")) &&  (imgUrlb === 'url("assests/rok2.svg")' || imgUrlb === 'url("assests/rok3.svg")')) {
+  if (!leftb && !(backgroundImage2.includes("castle2.svg")) && !(backgroundImage2.includes("CANON1.svg"))  && (imgUrlb === 'url("assests/rok2.svg")' || imgUrlb === 'url("assests/rok3.svg")')) {
       leftButtonb.disabled = false;
       console.log(1);
-      leftButtonb.addEventListener('click', leftButtonHandler);
+      leftButtonb.addEventListener('click', leftButtonH1);
   } else {
       leftButtonb.disabled = true;
-      leftButtonb.removeEventListener('click', leftButtonHandler);
+      leftButtonb.removeEventListener('click', leftButtonH1);
   }
 
-  if (!rightb  && !(backgroundImage1.includes("castle2.svg")) && (imgUrlb === 'url("assests/rok2.svg")' || imgUrlb === 'url("assests/rok3.svg")')) {
+  if (!rightb  && !(backgroundImage1.includes("castle2.svg")) && !(backgroundImage1.includes("CANON1.svg"))  && (imgUrlb === 'url("assests/rok2.svg")' || imgUrlb === 'url("assests/rok3.svg")')) {
       rightButtonb.disabled = false;
-      rightButtonb.addEventListener('click', rightButtonHandler);
+      rightButtonb.addEventListener('click', rightButtonH1);
   } else {
       rightButtonb.disabled = true;
-      rightButtonb.removeEventListener('click', rightButtonHandler);}
+      rightButtonb.removeEventListener('click', rightButtonH1);}
 
 
     
-      if (!downb   && !(backgroundImage3.includes("castle2.svg")) && (imgUrlb === 'url("assests/rok1.svg")' || imgUrlb === 'url("assests/rok.svg")')) {
-        downButtonb.addEventListener('click',downButtonHandler );
+      if (!downb   && !(backgroundImage3.includes("castle2.svg")) && !(backgroundImage3.includes("CANON1.svg"))  &&(imgUrlb === 'url("assests/rok1.svg")' || imgUrlb === 'url("assests/rok.svg")')) {
+        downButtonb.addEventListener('click',downButtonH1 );
         downButtonb.disabled = false;
     } else {
       downButtonb.disabled = true;
-      downButtonb.removeEventListener('click', downButtonHandler);}
+      downButtonb.removeEventListener('click', downButtonH1);}
    
 /////////////////////////////////////////
 
@@ -1791,6 +1802,7 @@ document.querySelector(`.box-${BoxNb + 8}`).addEventListener('click', downClickL
 
 }
 function clickHandlerb(event) {
+  event.stopPropagation();
   console.log(team);
   if (team !== "b" || Paused || Reached) return;
 var BoxNb = parseInt(event.target.className.match(/\d+/)[0], 10);
