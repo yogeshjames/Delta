@@ -66,6 +66,7 @@ class Player {
         ctx.fillStyle = 'gray';
         ctx.fillRect(this.x+2, this.y-3.8, this.width, 10);
         ctx.fillStyle = 'green';
+         if(this.curethealth<0)this.curethealth=5;
         const healthWidth = (this.currentHealth / this.maxHealth) * this.width;
         ctx.fillRect(this.x+3, this.y-3.8, healthWidth, 10);
         ctx.fillStyle='black';
