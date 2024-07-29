@@ -35,6 +35,7 @@ class Box {
         ctx.fillStyle='#333333';
         ctx.fillRect(this.x, this.y, this.width, this.height);
         ctx.fillStyle='green';
+        if(this.curethealth<0)this.curethealth=5;
         const healwith=Math.abs(this.curethealth/this.maxxhealth * this.width);
         ctx.fillRect(this.x+3, this.y+1,healwith, 7);
         ctx.strokeStyle = 'darkblack';
@@ -66,7 +67,6 @@ class Player {
         ctx.fillStyle = 'gray';
         ctx.fillRect(this.x+2, this.y-3.8, this.width, 10);
         ctx.fillStyle = 'green';
-         if(this.curethealth<0)this.curethealth=5;
         const healthWidth = (this.currentHealth / this.maxHealth) * this.width;
         ctx.fillRect(this.x+3, this.y-3.8, healthWidth, 10);
         ctx.fillStyle='black';
@@ -123,7 +123,7 @@ class Player {
                 zombie.x < this.x + this.width && 
                 zombie.x + zombiew > this.x && 
                 this.y < 500 + zombieh && 
-                this.y + this.height > 500 &&!shield// ZOMBIE CLASS I HAVE NO Y AND CONSTANTLY ITS ALWAYS 500
+                this.y + this.height > 500 &&!shield// and shiield shld be disabled  ZOMBIE CLASS I HAVE NO Y AND CONSTANTLY ITS ALWAYS 500
             ) {
                 console.log("Collided with zombie");
                 zombie.flag=1;//making the zombie stop after colliding woth playe 
@@ -210,7 +210,7 @@ class Player {
             }}
 
             
-            if(!gre &&grenades.length!=0){// check while grenade is in air
+            if(!gre &&grenades.length!=0){//  while grenade is in air no new gre
                // console.log(grenades);
                 if(grenades[0].x +grenades[0].width>box.x &&grenades[0].x<box.x + box.width &&grenades[0].y +grenades[0].height>box.y&&grenades[0].y<box.y + box.height ){
                     console.log(768687);
@@ -344,10 +344,13 @@ var boxes = [
  new Box(950, 452, 50, 120),
 ];
 
+var n=0;
 class zombie{
    constructor(x,x2){
     this.x=x;
     this.x2=x2;
+    this.id1=n++;
+    this.id2=n++;
     this.flag=0;// useing to check collison 
     this.time=0;
     this.time2=0;
@@ -546,7 +549,7 @@ var collided2=0;// reset grenade only any collison occurs eles check for all zom
 
 class Zombieclimber{
     constructor(type){
-       this.type=type;
+       this.type=type;///climber 1 or cliber 2 
         this.x=20;
         this.flag=0;
         this.velocity1=1;//0.85
@@ -633,7 +636,7 @@ if (bulletreached && gun) {
 
 
 
-    if (gre && grenadelauncher && grenades[0].y==canvas.height-grenades[0].width) {
+    if (gre && grenadelauncher && grenades[0].y==canvas.height-grenades[0].width) {///check colllison after reaching ground 
        // console.log(23232)
         const explosionRadius = 90; 
         const bullet = grenades[0];
@@ -821,8 +824,10 @@ var gun=1;// which gun is used
 
    zombie1();
  zombie2();
+ collidedZombies = collidedZombies.filter(zombie => array.some(z => z.id1 === zombie.id1));  
+ collidedZombies2 = collidedZombies2.filter(zombie =>  array2.some(z => z.id2 === zombie.id2));
   // console.log(x2);
-  grenades.forEach((grenade) => {
+  grenades.forEach((grenade) => {//even tho its a single object but we hv it as array since ots easy to oremove 
     grenade.update();
 grenade.draw();});
       boxes.forEach(box => box.draw());
