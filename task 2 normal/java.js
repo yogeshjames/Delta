@@ -34,6 +34,7 @@ class Box {
         ctx.fillStyle='#333333';//COLOUR OF BOX 
         ctx.fillRect(this.x, this.y, this.width, this.height);
         ctx.fillStyle='green';
+        if(this.curethealth<0)this.curethealth=5;
         const healwith=Math.abs(this.curethealth/this.maxxhealth * this.width);//INITILLY 1*3
         ctx.fillRect(this.x+3, this.y+1,healwith, 7);
         ctx.strokeStyle = 'darkblack';//OUTIDE OF BOX 
@@ -285,10 +286,13 @@ var boxes = [
      new Box(925, 522, 10, 50)
 ];
 
+var n=0;
 class zombie{
    constructor(x,x2){
     this.x=x;// two things for left and ryt side zpmbiws 
     this.x2=x2;
+    this.id1=n++;
+    this.id2=n++;
     this.flag=0;
     this.time=0;
     this.time2=0;
@@ -444,6 +448,11 @@ var bulletreached=0;
        switchcase();
    zombie1();
   zombie2();
+ collidedZombies = collidedZombies.filter(zombie => array.some(z => z.id1 === zombie.id1));  
+ collidedZombies2 = collidedZombies2.filter(zombie =>  array2.some(z => z.id2 === zombie.id2));
+ /// problem is even after the zombie is killed but before if it was collided  the collided zombies will still 
+/// soo ihave to check that the collided zombies are a part of zombie array if some is not remove that 
+  console.log(collidedZombies)  
   // console.log(x2);
       boxes.forEach(box => box.draw());
        player.update(boxes);
@@ -547,7 +556,7 @@ function respwanbox(){ boxes = [/// SAME LIKE ZOMBIE BUT HERE MANUALLY WE DO
                 const zombie = array[j];
                 if (zombie.checkCollision(box.x, box.y, box.width, box.height,i)) {
                     collidedZombies.push(zombie);/// the collided zombe instance 
-                    collidedZombies = removeDuplicates(collidedZombies);//// for same zombie it will counted again again 
+                    collidedZombies = removeDuplicates(collidedZombies);  //// for same zombie it will counted again again SO REMOVE DUPLICATES
 
                     if(collidedZombies.length<=1)box.curethealth--;////managing this soo that life decreases evenly 
                     else if(collidedZombies.length<=2)box.curethealth-=0.5;
@@ -591,7 +600,7 @@ function respwanbox(){ boxes = [/// SAME LIKE ZOMBIE BUT HERE MANUALLY WE DO
                 if (zombie.checkCollision2(box.x, box.y, box.width, box.height,i)) {
                     collidedZombies2.push(zombie);
                     collidedZombies2 = removeDuplicates(collidedZombies2);
-
+                    
                     if(collidedZombies2.length<=1)box.curethealth--;
                     else if(collidedZombies2.length<=2)box.curethealth-=0.5;
                     else if(collidedZombies2.length<=3)box.curethealth-=0.35;
