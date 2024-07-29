@@ -1,12 +1,12 @@
 
 //// IF GAME IS SLOWER PRESS RESTART OR REDSUME BUTTON 
-
+///small prblm iwth box health since each hv differnt width adn health 
 const canvas=document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
 canvas.width=1474;
 canvas.height=576;
 const plmage = new Image();
-const sprith=352/5;
+const sprith=352/5;//// HEIGHT AND WIDTH OF EACH CHARACTER 
 const spritw=848/15;
 plmage.src='assets/z.jpg';
 const plmage2 = new Image();
@@ -19,9 +19,9 @@ const heroh=64;
 const herow=320/5;
 let g=0;
 let s=5;
-
+/// WHY USING CLASSS COZ USING A SINGLE FUNCTION FRO ALL THE ZOMBIES EACH INSTANCE WILL HANDLE THAT SPECIFIC ZOMBIE 
 class Box {
-    constructor(x, y, width, height) {
+    constructor(x, y, width, height) {// WE CAN RECEIVE PARAMS 
         this.x = x;
         this.y = y;
         this.width = width;
@@ -31,12 +31,12 @@ class Box {
     }
 
     draw() {
-        ctx.fillStyle='#333333';
+        ctx.fillStyle='#333333';//COLOUR OF BOX 
         ctx.fillRect(this.x, this.y, this.width, this.height);
         ctx.fillStyle='green';
-        const healwith=Math.abs(this.curethealth/this.maxxhealth * this.width);
+        const healwith=Math.abs(this.curethealth/this.maxxhealth * this.width);//INITILLY 1*3
         ctx.fillRect(this.x+3, this.y+1,healwith, 7);
-        ctx.strokeStyle = 'darkblack';
+        ctx.strokeStyle = 'darkblack';//OUTIDE OF BOX 
         ctx.lineWidth = 4.5;
         ctx.strokeRect(this.x, this.y, this.width, this.height);
     }
@@ -44,7 +44,7 @@ class Box {
 
 class Player {
     constructor() {
-        this.x = 700;
+        this.x = 700;// CURRENT POS OF PLAYER 
         this.y = 526;
         this.width = herow;
         this.velocityX = 0;
@@ -52,7 +52,7 @@ class Player {
         this.height = heroh;
         this.currentHealth=190
         this.maxHealth=200
-        this.attachedBlock = {
+        this.attachedBlock = {///GUN
             x: this.x,
             y: this.y + 35,         
             width: 30,               
@@ -63,7 +63,7 @@ class Player {
     draw() {
         //HEALTH BAR
         ctx.fillStyle = 'gray';
-        ctx.fillRect(this.x+2, this.y-3.8, this.width, 10);
+        ctx.fillRect(this.x+2, this.y-3.8, this.width, 10);// GREAY OUTLINE BOX OF FIXED LENGTH
         ctx.fillStyle = 'green';
         const healthWidth = (this.currentHealth / this.maxHealth) * this.width;
         ctx.fillRect(this.x+3, this.y-3.8, healthWidth, 10);
@@ -73,12 +73,12 @@ class Player {
         }
 
 //HERO SPRITE SHEET
-        if(this.attachedBlock.r=='r'||this.attachedBlock.r=='l'){
+        if(this.attachedBlock.r=='r'||this.attachedBlock.r=='l'){////STANDING 
             hero.src='assets/s.png'
-        let f= Math.floor(g/s)%5;
-          g++;
-        ctx.drawImage(hero,f*herow,0,herow,heroh,this.x,this.y,herow,heroh)}
-        else if(this.attachedBlock.r=='right'){
+        let f= Math.floor(g/s)%5;//// F VALUE ALWAYS RANGES FROM 0 TO 4 
+          g++;////5 IS THE NO. OF COLUMNS IN SPRITE SHEET S IS HOW MUCH TIME EACH COLUMN SHOUKD BE PRESENT LIKE HOW SLLOW OR FAST EACH SLIDE 
+        ctx.drawImage(hero,f*herow,0,herow,heroh,this.x,this.y,herow,heroh)}///IMAGE,SPRITEX,SPRITEY,SPRITEW,SPRITEH(THE LEGTH OF THE IMAGE WE SELECT),POSINCANVAS,HEIGHTWIDTH
+        else if(this.attachedBlock.r=='right'){///RUNNING 
             hero.src='assets/srun.png'
          let f= Math.floor(g/s)%5;
           g++;
@@ -96,41 +96,41 @@ class Player {
    
     update(boxes) {
       //  console.log(this.velocityY);
-        this.y += this.velocityY;
+        this.y += this.velocityY;/// IF JUMPED 
         this.x += this.velocityX;
-       if(this.attachedBlock.r=='right' || this.attachedBlock.r=='r')this.attachedBlock.x=this.x+30;
+       if(this.attachedBlock.r=='right' || this.attachedBlock.r=='r')this.attachedBlock.x=this.x+30;//IF PLAYER STANDING OR RUNNING ON RYT SIDE 
        else{
        // console.log(1);
-        this.attachedBlock.x=this.x;
+        this.attachedBlock.x=this.x;//// HERE I DIDNT SUBRACT COZ PLAYER ITSELF HAS EMPTY SPACE AND IT STARTS FROM THERE 
        }
-        this.attachedBlock.y=this.y + 35;
+        this.attachedBlock.y=this.y + 35;///ALWAYS AT HIP LEVEL 
 
        //gravity for player 
        if (this.velocityY < 10 ) {
-        this.velocityY += 0.75;// increasg means comes down;
+        this.velocityY += 0.75;// increasg means comes down AT INCREASING SPEED;
     }
        
 
         // COLLISON WITH ZOMBIES 
-        array.forEach((zombie, index) => {
+        array.forEach((zombie, index) => {//// EACH ELEMENT IS EACH INSTANCE==EACH ZOMBIE
             const zombiew= spritw-13;
             const zombieh= sprith;
            // console.log(array);
            // console.log(zombie.y + zombieh);// BECOZ IN ZOMBIE CLASS I HAVE NO WIDTH AND HEIGHT
             if (
-                zombie.x < this.x + this.width && 
-                zombie.x + zombiew > this.x && 
-                this.y < 500 + zombieh && 
+                zombie.x < this.x + this.width && //RIGHT END SHOULD HV PASSED THORUGH LEFT END 
+                zombie.x + zombiew > this.x && /// IF COLLISON FROM LEFT A IS ALLWAYS TRUE IF FROM RIGHT B IS ALWAYYS TRUE IF FROM L EFT SOO I USE BOTH
+                this.y < 500 + zombieh && // HERE NO PRBLM SINCE ALWAYS GROUND
                 this.y + this.height > 500// ZOMBIE CLASS I HAVE NO Y AND CONSTANTLY ITS ALWAYS 500
             ) {
                 console.log("Collided with zombie");
                 zombie.flag=1;//making the zombie stop after colliding woth playe 
-                zombie.srow=1;
+                zombie.srow=1;//CHANGING ANIMATION 
                 this.currentHealth--;
             }
             else if (!zombie.collidedblock){// if zombie is in collision with block, not reset 
                 zombie.flag=0;
-                zombie.srow=2;
+                zombie.srow=2;////SINCE IT RUNS EVRYTIME I RESET BUT ALSO IF COLLIKSEN WITH BLOCK OCCURED NO RESET HERE 
             }
         });
         
@@ -160,7 +160,7 @@ class Player {
             // Top collision
            // console.log(this.y + this.height,this.velocityY);
             if (this.y + this.height >= box.y && this.y  < box.y + box.height && this.y<box.y &&
-                this.x + this.width >= box.x && this.x  < box.x + box.width &&this.velocityY>1
+                this.x + this.width >= box.x && this.x  < box.x + box.width &&this.velocityY>1// he should be jumping 
               ) {
                   //  console.log(1);
                    // console.log(this.velocityY)
@@ -199,7 +199,7 @@ class Player {
             }
 
             // collison with bullet
-            if(bulletreached){
+            if(bulletreached){//no collison detction should take place after rewaching the groind 
             if(bullets[0].x + bullets[0].width>box.x && bullets[0].x<box.x + box.width && bullets[0].y + bullets[0].height>box.y&& bullets[0].y<box.y + box.height ){
                 console.log(768687);
                 bullets=[];
@@ -212,7 +212,7 @@ class Player {
         if (this.y + this.height >= canvas.height) {
             this.y = canvas.height - this.height;
             this.velocityY = 0;
-           // this.isOnGround = true;
+          
         }
 
         //inside the canvas 
@@ -222,7 +222,7 @@ class Player {
             this.x = 990 - this.width;
         }
         if (this.y < 310) {
-            this.y = 310;
+            this.y = 310;//max height h could jump 
 
         }
     }
@@ -247,13 +247,13 @@ class Bullet {
         this.y = y;
         this.width = 10;
         this.height = 10;
-        this.velocityX = direction === 'right' || direction === 'r' ? 5 : -5;
+        this.velocityX = direction === 'right' || direction === 'r' ? 5 : -5;//stading or moving on right side 
         this.velocityY=-3// Initial upward velocity for projectile motion
         this.gravity = 0.2; // Gravity effect on bullet
     }
 
     update() {
-        this.velocityY += this.gravity;
+        this.velocityY += this.gravity;// should not come ast const speed ryt 
         this.x += this.velocityX;
         this.y += this.velocityY;// in canvas top dierection is minus soo thyat why initial value we take as -5
         bulletreached=1;
@@ -287,7 +287,7 @@ var boxes = [
 
 class zombie{
    constructor(x,x2){
-    this.x=x;
+    this.x=x;// two things for left and ryt side zpmbiws 
     this.x2=x2;
     this.flag=0;
     this.time=0;
@@ -301,7 +301,7 @@ class zombie{
     this.collidedblock2=0;
    }
    update(){
-    if(!this.flag)this.x<1470?this.x=this.x+this.velocity1:this.x=20;
+    if(!this.flag)this.x<1470?this.x=this.x+this.velocity1:this.x=20;/// only move if they dont get collided 
     
    }
    update2(){
@@ -315,7 +315,7 @@ class zombie{
     ctx.drawImage(plmage,(framex)*spritw-10,this.srow*sprith+10,spritw,sprith-12,this.x,500,spritw,sprith);
    }
     animate2(){
-        let framet=Math.floor(gt/st) %9;//no. of rows in my spite sheet 
+        let framet=Math.floor(gt/st) %9;//no. of columns in my spite sheet 
       var eat=0
       if(this.srow2==1)eat=2;// while eating im changing  width
     ctx.drawImage(plmage2,(6.28+framet+eat)*spritw,this.srow2*sprith,spritw,sprith,this.x2,500,spritw,sprith);
@@ -527,7 +527,7 @@ function switchcase(){// just after respawn evrtng should goo in place coz value
     }
 }
 
-function respwanbox(){ boxes = [
+function respwanbox(){ boxes = [/// SAME LIKE ZOMBIE BUT HERE MANUALLY WE DO 
         new Box(450, 522, 70, 50),
         new Box(530, 522, 70, 50),
         new Box(850, 522, 60, 50),
@@ -546,10 +546,10 @@ function respwanbox(){ boxes = [
             for (let j = 0; j < array.length; j++) {
                 const zombie = array[j];
                 if (zombie.checkCollision(box.x, box.y, box.width, box.height,i)) {
-                    collidedZombies.push(zombie);
-                    collidedZombies = removeDuplicates(collidedZombies);
+                    collidedZombies.push(zombie);/// the collided zombe instance 
+                    collidedZombies = removeDuplicates(collidedZombies);//// for same zombie it will counted again again 
 
-                    if(collidedZombies.length<=1)box.curethealth--;
+                    if(collidedZombies.length<=1)box.curethealth--;////managing this soo that life decreases evenly 
                     else if(collidedZombies.length<=2)box.curethealth-=0.5;
                     else if(collidedZombies.length<=3)box.curethealth-=0.35;
                    // console.log(box.curethealth);
@@ -559,9 +559,9 @@ function respwanbox(){ boxes = [
                     zombie.flag=0;
                     zombie.time=0;
                     zombie.srow=2;
-                    box.curethealth=400;
+                    box.curethealth=400;//actually no need since bix is removed 
                     zombie.collidedblock=0;
-                    zombie.velocity1+=0.09;// increase speed of zombie
+                    zombie.velocity1+=0.09;// increase speed of zombie for goood game 
                     collidedZombies.forEach(zombie => {
                         console.log(23);
                          zombie.flag = 0;
@@ -637,7 +637,7 @@ window.addEventListener('keydown', (event) => {
     }
 });
 
-window.addEventListener('keyup', (event) => {
+window.addEventListener('keyup', (event) => {//once key up is triggered it will kepp happenig soo i also add key up 
     if (event.key === 'd'){
         player.velocityX = 0;
         player.attachedBlock.r='r';
@@ -650,7 +650,7 @@ window.addEventListener('keyup', (event) => {
 
 canvas.addEventListener('click', (event) => {
 
-    if(!bulletreached)player.shoot();
+    if(!bulletreached)player.shoot();/// only after a bulet rfeach or collid 
 });
 
 
