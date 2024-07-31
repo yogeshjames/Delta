@@ -60,33 +60,38 @@ const playlist = mongoose.models.playlists || mongoose.model('playlists',playlis
     });
 
 var id=0;
-app.post('/register',  (req,res)=>{
+app.post('/register', async (req, res) => {
+    const { name, email, password } = req.body;
 
-        const { name, email, password } = req.body;
-        if (!name || !email || !password) {
-        res.json({ message: 'All fields are required' });
-          return res.status(400)
-          
-        }
-   
+    if (!name || !email || !password) {
+        return res.status(400).json({ message: 'All fields are required' });
+    }
+
     try {
-        const newUser = {
-            name:name,
-          email: email,
-          password: password,
-          id:id
+        // Check if the email already exists
+        const existing = await loginform.findOne({ email: email });
+
+        if (existing) {
+            return res.status(400).json({ message: 'Email already exists' });
         }
-        loginform.insertMany(newUser);
-         console.log(loginform.find());
-         res.status(200)
-         res.json({ message: 'User registered successfully'});
-         id++;
-      } catch (error) {
+
+        const newUser = {
+            name: name,
+            email: email,
+            password: password,
+            id: id
+        };
+
+        await loginform.insertMany(newUser);
+        console.log(await loginform.find());
+
+        res.status(200).json({ message: 'User registered successfully' });
+        id++;
+    } catch (error) {
         console.error('Error saving user:', error);
         res.status(500).json({ error: 'Internal Server Error' });
-      }
-    })
-
+    }
+});
 
     app.get('/likedd', async (req,res)=>{
 
