@@ -20,12 +20,12 @@ const AudioPlayer = ({ src, next }) => {
     audio.src = src;
     setLoaded(false);
 
-    const handleLoadedData = () => {
+    const LoadedData = () => {
       setLoaded(true);
       setDuration(audio.duration);
     };
 
-    const handleTimeUpdate = () => {
+    const TimeUpdate = () => {
       const progress = (audio.currentTime / audio.duration) * 100;
       setProgress(progress);
       setCurrentTime(audio.currentTime);
@@ -34,14 +34,14 @@ const AudioPlayer = ({ src, next }) => {
       }
     };
 
-    audio.addEventListener('loadeddata', handleLoadedData);
+    audio.addEventListener('loadeddata', LoadedData);
     console.log(src)
-    audio.addEventListener('timeupdate', handleTimeUpdate);
+    audio.addEventListener('timeupdate', TimeUpdate);
 
     return () => {
       audio.pause();
-      audio.removeEventListener('loadeddata', handleLoadedData);
-      audio.removeEventListener('timeupdate', handleTimeUpdate);
+      audio.removeEventListener('loadeddata', LoadedData);
+      audio.removeEventListener('timeupdate', TimeUpdate);
     };
   }, [src]);// i have not added src coz its keep changing soo it often reloads add it if u want 
 
