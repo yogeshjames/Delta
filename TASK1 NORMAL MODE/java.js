@@ -769,10 +769,8 @@ document.querySelector(`.box-${y}`).addEventListener('click', setupObjectMovemen
 document.querySelector(`.box-${z}`).addEventListener('click', setupObjectMovement(z, "url('assests/rok1.svg')"));
 document.querySelector(`.box-${o}`).addEventListener('click', setupObjectMovement(o, "url('assests/tri.svg')"));
 
-function leu(l){
-  if (team !== "a") return;
-document.querySelector(`.box-${l}`).addEventListener('click', function(event){
-document.querySelectorAll(".but")[0].style.visibility="visible";
+const newlistener = function() {
+  document.querySelectorAll(".but")[0].style.visibility="visible";
 document.querySelectorAll(".but")[1].style.visibility="visible";
 document.querySelectorAll(".xv")[0].style.visibility="hidden";
 document.querySelectorAll(".xv")[1].style.visibility="hidden";
@@ -780,7 +778,21 @@ document.querySelectorAll(".xvb")[0].style.visibility="hidden";
 document.querySelectorAll(".xvb")[1].style.visibility="hidden";
 document.querySelectorAll(".butb")[0].style.visibility="hidden";
 document.querySelectorAll(".butb")[1].style.visibility="hidden";
-});
+};
+// im declaring this outside coz if i use this inside evrytime new function will be created which will point to differnt locations
+function leu(l) {
+  console.log(l);
+  if (team !== "a") return;
+  
+  for (let i = 0; i <= 63; i++) {
+    const target = document.querySelector(`.box-${i}`);
+    if (target) {
+        target.removeEventListener('click', newlistener);
+    }
+}
+  // Add the new listener
+  const target = document.querySelector(`.box-${l}`);
+    target.addEventListener('click', newlistener);
 }
 leu(13);
 var rok=0;
@@ -923,26 +935,21 @@ startTeamATimer();
 // Function to resume 
 function resumeTimers() {
     if (team === "a") {
-       // startTeamATimer();
+        startTeamATimer();
     } else if (team === "b") {
-        //startTeamBTimer();
+        startTeamBTimer();
     }
 }
 
 // 
-function pauseGame() {
-  if (!Paused) {
-      Paused = true;
-      teampause = team; // Store the current team
-  }
-}
-
-function resumeGame() {
-  if (Paused) {
-      Paused = false;
-      team = teampause; // Restore the paused team state
-      resumeTimers();
-  }
+function play() {
+    Paused = !Paused;
+    if (Paused) {
+        teampause = team; // S
+    } else {
+        team = teampause; // 
+        resumeTimers();
+    }
 }
 
 
@@ -1220,21 +1227,32 @@ document.querySelector(`.box-${zb}`).addEventListener('click', setupObjectMoveme
 document.querySelector(`.box-${ob}`).addEventListener('click', setupObjectMovementb(ob, "url('assests/tri2.svg')"));
 
 
-    
-function leub(lb){
+   
+const newlistenerb = function(event) {
+  document.querySelectorAll(".butb")[0].style.visibility = "visible";
+  document.querySelectorAll(".butb")[1].style.visibility = "visible";
+  document.querySelectorAll(".xvb")[0].style.visibility = "hidden";
+  document.querySelectorAll(".xvb")[1].style.visibility = "hidden";
+  document.querySelectorAll(".but")[0].style.visibility = "hidden";
+  document.querySelectorAll(".but")[1].style.visibility = "hidden";
+  document.querySelectorAll(".xv")[0].style.visibility = "hidden";
+  document.querySelectorAll(".xv")[1].style.visibility = "hidden";
+};
+
+function leub(lb) {
   console.log(lb);
   if (team !== "b") return;
-  document.querySelector(`.box-${lb}`).addEventListener('click', function(event){
-  document.querySelectorAll(".butb")[0].style.visibility="visible";
-  document.querySelectorAll(".butb")[1].style.visibility="visible";
-  document.querySelectorAll(".xvb")[0].style.visibility="hidden";
-  document.querySelectorAll(".xvb")[1].style.visibility="hidden";
-  document.querySelectorAll(".but")[0].style.visibility="hidden";
-  document.querySelectorAll(".but")[1].style.visibility="hidden";
-  document.querySelectorAll(".xv")[0].style.visibility="hidden";
-  document.querySelectorAll(".xv")[1].style.visibility="hidden"; 
-  });
-  }
+  
+  for (let i = 0; i <= 63; i++) {
+    const target = document.querySelector(`.box-${i}`);
+    if (target) {
+        target.removeEventListener('click', newlistenerb);
+    }
+}
+  // Add the new listener
+  const target = document.querySelector(`.box-${lb}`);
+    target.addEventListener('click', newlistenerb);
+}
   leub(54);
   var rokb=0;
   function but1b(direction) {
