@@ -942,14 +942,20 @@ function resumeTimers() {
 }
 
 // 
-function play() {
-    Paused = !Paused;
-    if (Paused) {
-        teampause = team; // S
-    } else {
-        team = teampause; // 
-        resumeTimers();
-    }
+
+function pauseGame() {
+  if (!Paused) {
+      Paused = true;
+      teampause = team; // Store the current team
+  }
+}
+
+function resumeGame() {
+  if (Paused) {
+      Paused = false;
+      team = teampause; // Restore the paused team state
+      resumeTimers();
+  }
 }
 
 
