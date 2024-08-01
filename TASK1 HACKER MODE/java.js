@@ -860,8 +860,8 @@ let teampause=""
      // if (rok == 1) document.querySelector(`.box-${BoxN + pos2}`).style.backgroundImage = "url('assests/rok.svg')";
       z = BoxN + pos2;
       console.log(z);
-      if(rok==0)setupObjectMovement(z, "url('assests/rok1.svg')");
-      if (rok == 1) setupObjectMovementb(z, "url('assests/rok.svg')");
+      if(rok==0){setupObjectMovement(z, "url('assests/rok1.svg')"); leu(z)};
+      if (rok == 1) {setupObjectMovementb(z, "url('assests/rok.svg')"); leu(z)};
      document.querySelector(`.box-${BoxN + pos2}`).addEventListener('click', clickHandler);
      
      document.querySelector(`.box-${BoxN}`).addEventListener('click', clickHandler);// listener to both the boxes
@@ -1130,11 +1130,8 @@ document.querySelector(`.box-${y}`).addEventListener('click', setupObjectMovemen
 document.querySelector(`.box-${z}`).addEventListener('click', setupObjectMovement(z, "url('assests/rok1.svg')"));
 document.querySelector(`.box-${o}`).addEventListener('click', setupObjectMovement(o, "url('assests/tri.svg')"));
 
-
-function leu(l){
-  if (team !== "a") return;
-document.querySelector(`.box-${l}`).addEventListener('click', function(event){
-document.querySelectorAll(".but")[0].style.visibility="visible";
+const newlistener = function() {
+  document.querySelectorAll(".but")[0].style.visibility="visible";
 document.querySelectorAll(".but")[1].style.visibility="visible";
 document.querySelectorAll(".xv")[0].style.visibility="hidden";
 document.querySelectorAll(".xv")[1].style.visibility="hidden";
@@ -1142,11 +1139,34 @@ document.querySelectorAll(".xvb")[0].style.visibility="hidden";
 document.querySelectorAll(".xvb")[1].style.visibility="hidden";
 document.querySelectorAll(".butb")[0].style.visibility="hidden";
 document.querySelectorAll(".butb")[1].style.visibility="hidden";
-});
+};
+// im declaring this outside coz if i use this inside evrytime new function will be created which will point to differnt locations
+function leu(l) {
+  console.log(l);
+  if (team !== "a") return;
+  
+  for (let i = 0; i <= 63; i++) {
+    const target = document.querySelector(`.box-${i}`);
+    if (target) {
+        target.removeEventListener('click', newlistener);
+    }
+}
+  // Add the new listener
+  const target = document.querySelector(`.box-${l}`);
+    target.addEventListener('click', newlistener);
 }
 leu(13);
 var rok=0;
 function but1(direction) {
+  var upButton = document.getElementById('u');
+var leftButton = document.getElementById('d');
+var rightButton = document.getElementById('o');
+var downButton = document.getElementById('n');
+
+upButton.disabled = true; 
+leftButton.disabled = true; 
+rightButton.disabled = true; 
+downButton.disabled = true; 
   findDivWithImage();
 let  div=inp[0];
 if (direction === 'right' && document.querySelector(`.box-${div}`).style.backgroundImage.includes("rok.svg") && team=="a" && !Reached1) {
@@ -1304,7 +1324,7 @@ function resumeTimers() {
     if (team === "a") {
       //  startTeamATimer();
     } else if (team === "b") {
-      //  startTeamBTimer();
+       // startTeamBTimer();
     }
 }
 
@@ -1323,6 +1343,7 @@ function resumeGame() {
       resumeTimers();
   }
 }
+
 
 
 
@@ -1585,8 +1606,8 @@ console.log(newPosImage);
   console.log("New Box:", zb);
 
   // Add event listeners to new positions
-  if(rokb==0)setupObjectMovementb(zb, "url('assests/rok2.svg')");
-  if (rokb == 1) setupObjectMovementb(zb, "url('assests/rok3.svg')");
+  if(rokb==0){setupObjectMovementb(zb, "url('assests/rok2.svg')");leub(zb)};
+  if (rokb == 1){ setupObjectMovementb(zb, "url('assests/rok3.svg')");leub(zb)};
   document.querySelector(`.box-${BoxNb1 + pos2}`).addEventListener('click', clickHandlerb);
   document.querySelector(`.box-${BoxNb1}`).addEventListener('click', clickHandlerb);
   // Reset states and start timers
@@ -1875,26 +1896,47 @@ document.querySelector(`.box-${zb}`).addEventListener('click', setupObjectMoveme
 document.querySelector(`.box-${ob}`).addEventListener('click', setupObjectMovementb(ob, "url('assests/tri2.svg')"));
 
 
-    
-function leub(lb){
+const newlistenerb = function(event) {
+  document.querySelectorAll(".butb")[0].style.visibility = "visible";
+  document.querySelectorAll(".butb")[1].style.visibility = "visible";
+  document.querySelectorAll(".xvb")[0].style.visibility = "hidden";
+  document.querySelectorAll(".xvb")[1].style.visibility = "hidden";
+  document.querySelectorAll(".but")[0].style.visibility = "hidden";
+  document.querySelectorAll(".but")[1].style.visibility = "hidden";
+  document.querySelectorAll(".xv")[0].style.visibility = "hidden";
+  document.querySelectorAll(".xv")[1].style.visibility = "hidden";
+};
+
+function leub(lb) {
   console.log(lb);
   if (team !== "b") return;
-  document.querySelector(`.box-${lb}`).addEventListener('click', function(event){
-  document.querySelectorAll(".butb")[0].style.visibility="visible";
-  document.querySelectorAll(".butb")[1].style.visibility="visible";
-  document.querySelectorAll(".xvb")[0].style.visibility="hidden";
-  document.querySelectorAll(".xvb")[1].style.visibility="hidden";
-  document.querySelectorAll(".but")[0].style.visibility="hidden";
-  document.querySelectorAll(".but")[1].style.visibility="hidden";
-  document.querySelectorAll(".xv")[0].style.visibility="hidden";
-  document.querySelectorAll(".xv")[1].style.visibility="hidden"; 
-  });
-  }
-  leub(54);
+  
+  for (let i = 0; i <= 63; i++) {
+    const target = document.querySelector(`.box-${i}`);
+    if (target) {
+        target.removeEventListener('click', newlistenerb);
+    }
+}
+  // Add the new listener
+  const target = document.querySelector(`.box-${lb}`);
+    target.addEventListener('click', newlistenerb);
+}
+leub(54);
   var rokb=0;
   function but1b(direction) {
   findDivWithImage();
   let  divb=inp[7];
+  ///doing this cause since this is also considered as a move ihv to disable the buttons 
+var upButtonb = document.getElementById('u');
+var leftButtonb = document.getElementById('d');
+var rightButtonb = document.getElementById('o');
+var downButtonb = document.getElementById('n');
+
+upButtonb.disabled = true; 
+leftButtonb.disabled = true; 
+rightButtonb.disabled = true; 
+downButtonb.disabled = true; 
+
   if (direction === 'right' && document.querySelector(`.box-${divb}`).style.backgroundImage.includes("rok3.svg")&& team=="b" && !Reached) {
  // console.log(1);
   
