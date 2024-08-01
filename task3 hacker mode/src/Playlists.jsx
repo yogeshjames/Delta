@@ -113,8 +113,8 @@ if (exists && partyplaylist!=="party") {
   axios.post('http://localhost:3000/partymode', {
     partyplaylist
   })
-  setwhat("added to party"); 
-  setpartyplaylist("");
+  setwhat("added to party")
+  setpartyplaylist("")
    showparty(!partyview)
   .then(response => {
 console.log(response.status)
