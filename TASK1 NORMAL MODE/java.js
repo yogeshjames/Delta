@@ -923,9 +923,9 @@ startTeamATimer();
 // Function to resume 
 function resumeTimers() {
     if (team === "a") {
-        startTeamATimer();
+       // startTeamATimer();
     } else if (team === "b") {
-        startTeamBTimer();
+        //startTeamBTimer();
     }
 }
 
