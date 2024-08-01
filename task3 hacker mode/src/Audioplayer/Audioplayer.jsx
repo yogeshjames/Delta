@@ -43,8 +43,7 @@ const AudioPlayer = ({ src, next }) => {
       audio.removeEventListener('loadeddata', LoadedData);
       audio.removeEventListener('timeupdate',TimeUpdate);
     };
-  }, [src]);// i have not added src coz its keep changing soo it often reloads add it if u want 
-
+  }, [src]);// i have not added src coz its keep changing soo it often reloads add it 
   const skipForward = () => {
     const audio = audioRef.current;
     audio.currentTime = Math.min(audio.currentTime + 10, audio.duration);
